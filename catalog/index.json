@@ -1,0 +1,74 @@
+{
+  "schema_version": 2,
+  "generated_from": "GitHub repository tree observation",
+  "observed_date": "2026-10-28",
+  "project": "rb_gis",
+  "source": "pskeffington/pip_boy",
+  "branch": "feat/native-gis-foundation",
+  "primary_navigation": "docs/INDEX.md",
+  "status": "migration-in-progress",
+  "truthfulness": "Imported files are reference copies, not production RB_GIS components. Test files copied do not imply tests pass.",
+  "paths": {
+    "readme": "README.md",
+    "migration": "docs/MIGRATION.md",
+    "literature": "docs/LITERATURE_MATRIX.md",
+    "navigation": "docs/INDEX.md",
+    "components": "catalog/components.json",
+    "gates": "catalog/gates.json"
+  },
+  "policies": {
+    "network_requires_user_consent": true,
+    "no_synthetic_gps": true,
+    "no_default_location_persistence": true,
+    "no_upstream_rustgis_writes": true
+  },
+  "counts": {
+    "native_crates": 1,
+    "imported_legacy_js": 5,
+    "imported_css": 1,
+    "imported_legacy_rust": 1,
+    "imported_tests": 7,
+    "imported_docs": 2
+  },
+  "missing_from_legacy_test_inventory": [
+    "tools/test_rustgis_map_import.cjs",
+    "tools/test_rustgis_map_view.cjs",
+    "tools/test_rustgis_online.cjs",
+    "tools/test_rustgis_online_view.cjs",
+    "tools/audit_map_cache.py",
+    "tools/test_audit_map_cache.py"
+  ],
+  "validation": {
+    "cargo_test": "not-run",
+    "cargo_fmt": "not-run",
+    "cargo_clippy": "not-run",
+    "legacy_suite": "not-run"
+  },
+  "entrypoints": [
+    "README.md",
+    "docs/INDEX.md",
+    "docs/GUI.md",
+    "docs/MIGRATION.md"
+  ],
+  "gui": {
+    "crate": "crates/rb-gis-gui",
+    "run": "cargo run -p rb-gis-gui",
+    "status": "scaffolded-unverified",
+    "features": [
+      "manual center",
+      "Web Mercator viewport",
+      "drag pan",
+      "zoom",
+      "reference grid",
+      "local GeoJSON import",
+      "points, lines and polygon outlines"
+    ],
+    "not_yet": [
+      "GNSS receiver",
+      "Pip Boy adapter",
+      "county-specific map packages",
+      "polygon fills and styling",
+      "full rendering validation"
+    ]
+  }
+}
