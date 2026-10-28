@@ -142,7 +142,7 @@
       "path": "crates/rb-gis-core/src/viewport.rs",
       "language": "rust",
       "status": "native-unverified",
-      "purpose": "Web Mercator viewport projection, wrap, zoom, pan",
+      "purpose": "Web Mercator screen projection, antimeridian-aware fit, pan and cursor-anchored zoom",
       "gate": "G2"
     },
     {
@@ -150,7 +150,7 @@
       "path": "crates/rb-gis-gui/src/main.rs",
       "language": "rust",
       "status": "native-unverified",
-      "purpose": "Independent small-screen GUI: viewport, manual center, local import, fit and per-geometry visibility",
+      "purpose": "Independent small-screen native GUI with MAP/LYR/SRC/GPS/SET panels, explicit manual position and package import",
       "gate": "G2"
     },
     {
@@ -160,11 +160,46 @@
       "status": "native-unverified",
       "purpose": "Bounded local GeoJSON feature and geometry parsing",
       "gate": "G1"
+    },
+    {
+      "id": "local-layers",
+      "path": "crates/rb-gis-core/src/layers.rs",
+      "language": "rust",
+      "status": "native-unverified",
+      "purpose": "Bounded local GeoJSON import, typed feature roles, declared provenance, directory manifest with all-or-nothing load",
+      "gate": "M2"
+    },
+    {
+      "id": "map-painter",
+      "path": "crates/rb-gis-gui/src/map_view.rs",
+      "language": "rust",
+      "status": "native-unverified",
+      "purpose": "Standalone GUI renderer for classified roads, water, boundaries, landmarks and other geometry",
+      "gate": "M1"
+    },
+    {
+      "id": "package-schema",
+      "path": "catalog/package_schema.json",
+      "language": "json-schema",
+      "status": "documented-unverified",
+      "purpose": "Machine-readable directory package input contract",
+      "gate": "M2"
+    },
+    {
+      "id": "offline-fixture",
+      "path": "fixtures/synthetic-package/manifest.json",
+      "language": "json",
+      "status": "synthetic-test-only",
+      "purpose": "Four-category artificial layer regression fixture, never loaded automatically",
+      "gate": "M2"
     }
   ],
   "status_definitions": {
     "native": "in active Rust workspace",
     "imported-reference": "copied legacy artifact, not a native port",
-    "imported-unverified": "copied test, standalone execution not verified"
+    "imported-unverified": "copied test, standalone execution not verified",
+    "native-unverified": "Rust source in workspace; not yet compiled/run in a verified environment",
+    "synthetic-test-only": "Artificial geometry for regression tests, not a navigation map",
+    "documented-unverified": "Machine-readable specification; conformance tests still required"
   }
 }
