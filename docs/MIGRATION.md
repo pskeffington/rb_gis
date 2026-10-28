@@ -42,3 +42,6 @@ Port behavior with independent Rust modules; retain a compatibility adapter unti
 - Offline tiles/archives need source, attribution, license, update vintage and checksum metadata.
 - Preserve last validated offline data if a replacement fails.
 - Physical touchscreen usability and Pi 5 GPU performance are unverified until device testing.
+
+## 2026-10-28 standalone GUI extraction note
+The native GUI now has MAP/LYR/SRC/GPS/SET navigation, explicit role-labelled multi-layer local GeoJSON imports, and a bounded offline manifest loader. This is not parity with the Rust loopback county service in pip_boy/crates/pipboy/src/dashboard.rs. Extract that allowlisted Census package/cache/ZIP service into an independent backend before removing any Pip Boy map code. See [legacy loader handoff](LEGACY_LOADER_HANDOFF.md) and [offline package](OFFLINE_PACKAGE.md).
