@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/rb-gis-core"]
+members = ["crates/rb-gis-core", "crates/rb-gis-gui"]
 
 [workspace.package]
 edition = "2021"
