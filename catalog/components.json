@@ -192,6 +192,78 @@
       "status": "synthetic-test-only",
       "purpose": "Four-category artificial layer regression fixture, never loaded automatically",
       "gate": "M2"
+    },
+    {
+      "id": "legacy-audit_map_cache-py",
+      "path": "migration/pip-boy/tools/audit_map_cache.py",
+      "language": "python",
+      "status": "imported-unverified",
+      "purpose": "Legacy Pip Boy GIS acceptance baseline, not wired to native RB_GIS CI",
+      "gate": "M5"
+    },
+    {
+      "id": "legacy-test_audit_map_cache-py",
+      "path": "migration/pip-boy/tools/test_audit_map_cache.py",
+      "language": "python",
+      "status": "imported-unverified",
+      "purpose": "Legacy Pip Boy GIS acceptance baseline, not wired to native RB_GIS CI",
+      "gate": "M5"
+    },
+    {
+      "id": "legacy-test_county_boundary_cache-cjs",
+      "path": "migration/pip-boy/tools/test_county_boundary_cache.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy Pip Boy GIS acceptance baseline, not wired to native RB_GIS CI",
+      "gate": "M5"
+    },
+    {
+      "id": "legacy-test_county_sources-cjs",
+      "path": "migration/pip-boy/tools/test_county_sources.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy Pip Boy GIS acceptance baseline, not wired to native RB_GIS CI",
+      "gate": "M5"
+    },
+    {
+      "id": "legacy-test_pointlm_ingestion-cjs",
+      "path": "migration/pip-boy/tools/test_pointlm_ingestion.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy Pip Boy GIS acceptance baseline, not wired to native RB_GIS CI",
+      "gate": "M5"
+    },
+    {
+      "id": "legacy-test_rustgis_map_import-cjs",
+      "path": "migration/pip-boy/tools/test_rustgis_map_import.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy Pip Boy GIS acceptance baseline, not wired to native RB_GIS CI",
+      "gate": "M5"
+    },
+    {
+      "id": "legacy-test_rustgis_map_view-cjs",
+      "path": "migration/pip-boy/tools/test_rustgis_map_view.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy Pip Boy GIS acceptance baseline, not wired to native RB_GIS CI",
+      "gate": "M5"
+    },
+    {
+      "id": "legacy-test_rustgis_online-cjs",
+      "path": "migration/pip-boy/tools/test_rustgis_online.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy Pip Boy GIS acceptance baseline, not wired to native RB_GIS CI",
+      "gate": "M5"
+    },
+    {
+      "id": "legacy-test_rustgis_online_view-cjs",
+      "path": "migration/pip-boy/tools/test_rustgis_online_view.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy Pip Boy GIS acceptance baseline, not wired to native RB_GIS CI",
+      "gate": "M5"
     }
   ],
   "status_definitions": {
