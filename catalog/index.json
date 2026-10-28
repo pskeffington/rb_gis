@@ -24,7 +24,7 @@
     "no_upstream_rustgis_writes": true
   },
   "counts": {
-    "native_crates": 1,
+    "native_crates": 2,
     "imported_legacy_js": 5,
     "imported_css": 1,
     "imported_legacy_rust": 1,
@@ -63,7 +63,9 @@
       "reference grid",
       "local GeoJSON import",
       "points, lines and polygon outlines",
-      "fit to actual measured canvas size"
+      "fit to actual measured canvas size",
+      "geometry-type visibility toggles: points/lines/areas",
+      "local map source/no geography status"
     ],
     "not_yet": [
       "GNSS receiver",
