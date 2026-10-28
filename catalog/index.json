@@ -59,12 +59,16 @@
       "Web Mercator viewport",
       "drag pan",
       "zoom",
-      "reference grid"
+      "reference grid",
+      "local GeoJSON import",
+      "points, lines and polygon outlines"
     ],
     "not_yet": [
-      "real layers",
       "GNSS receiver",
-      "Pip Boy adapter"
+      "Pip Boy adapter",
+      "county-specific map packages",
+      "polygon fills and styling",
+      "full rendering validation"
     ]
   }
 }
