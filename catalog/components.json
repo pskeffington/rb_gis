@@ -152,6 +152,14 @@
       "status": "native-unverified",
       "purpose": "Independent 480x320 eframe mapping development window",
       "gate": "G2"
+    },
+    {
+      "id": "geojson-native",
+      "path": "crates/rb-gis-core/src/geojson.rs",
+      "language": "rust",
+      "status": "native-unverified",
+      "purpose": "Bounded local GeoJSON feature and geometry parsing",
+      "gate": "G1"
     }
   ],
   "status_definitions": {
