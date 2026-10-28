@@ -1,36 +1,37 @@
-# RB_GIS repository index
+# RB_GIS development index
 
-**Canonical machine entrypoint:** [catalog/index.json](../catalog/index.json)  
-**Component manifest:** [catalog/components.json](../catalog/components.json)  
-**Gate tracking:** [catalog/gates.json](../catalog/gates.json)
+Machine entrypoint: [catalog/index.json](../catalog/index.json)  
+Component manifest: [catalog/components.json](../catalog/components.json)  
+Gate ledger: [catalog/gates.json](../catalog/gates.json)  
+Offline package schema: [catalog/package_schema.json](../catalog/package_schema.json)
 
-## Read order for maintainers and coding agents
-1. [README](../README.md) — product boundary and getting started
-2. [Major roadmap](MAJOR_ROADMAP.md) — milestone sequence and release gates
-3. [Migration plan](MIGRATION.md) — ownership, portability and acceptance gates
-3. [Component inventory](../catalog/components.json) — verified paths and implementation maturity
-4. [Literature matrix](LITERATURE_MATRIX.md) — research references and design tradeoffs
-5. [Gate ledger](../catalog/gates.json) — criteria for promotion to production
+## Recommended read order
 
-- [Standalone GUI](GUI.md) — micro-display application and launch command
+1. [README](../README.md) — product boundary and quick run instructions
+2. [GUI](GUI.md) — independent small-screen tabs and current features
+3. [Offline package](OFFLINE_PACKAGE.md) — atomic local layer loading
+4. [Legacy loader handoff](LEGACY_LOADER_HANDOFF.md) — remaining Census/ZIP source extraction
+5. [Major roadmap](MAJOR_ROADMAP.md) — M0–M7 implementation and acceptance
+6. [Migration contract](MIGRATION.md) — gates and safety invariants
+7. [Literature matrix](LITERATURE_MATRIX.md) — geospatial technology research
 
-## Code boundaries
-- `crates/rb-gis-core/`: native, independently owned Rust library. Only actual workspace member.
-- `migration/pip-boy/`: **archived working-source copies** from Pip Boy. Not part of the RB_GIS runtime. Must not be assumed compiled, linked or regression-tested.
-- `catalog/`: machine-readable indexes and planned quality gates.
-- `docs/`: design authority and operator restrictions.
-- `.github/workflows/ci.yml`: preliminary native Rust CI, no migrated JavaScript suite yet.
+## Current source of truth
 
-## Migration ownership
-RB_GIS will own all GIS mechanics including local map data, feature/layer management, viewport projection, coordinate handling, map cache and receiver adapters. Pip Boy retains its one-module display, common Settings UI, permission prompts and package lifecycle. Pip Boy maps remain in place until RB_GIS reaches G5.
+- crates/rb-gis-core/src/lib.rs — core public API
+- crates/rb-gis-core/src/geojson.rs — bounded GeoJSON
+- crates/rb-gis-core/src/viewport.rs — Web Mercator and cursor-centered zoom
+- crates/rb-gis-core/src/layers.rs — local package model, provenance and atomic load
+- crates/rb-gis-gui/src/main.rs — standalone application tabs, source controls, lifecycle
+- crates/rb-gis-gui/src/map_view.rs — map painting, labels and category styles
+- fixtures/synthetic-package — synthetic non-navigation regression fixtures; never loaded automatically
+- migration/pip-boy — legacy working reference code, excluded from native Rust workspace
 
-## Indexed status and gaps
-The imported code is a frozen starting reference, not a complete native Rust migration. Seven legacy CommonJS test files were copied, but their host dependencies and execution status have **not** been verified. Four RustGIS-related CommonJS tests and two Python audit scripts are still missing from the migration copy. No native map renderer, county cache or hardware GNSS backend is currently implemented in the RB_GIS workspace.
+## Implementation gaps that must not be hidden
 
-## Index maintenance contract
-- Update component statuses only with linked commits and validation evidence.
-- New modules must be added to `catalog/components.json` with owner gate and source path.
-- Never represent a browser geolocation/manual center as an actual receiver fix.
-- Keep offline source attribution and data provenance.
-- Keep `catalog/index.json` aligned with actual repository contents, not aspirational structure.
-- No location network calls without user authorization.
+The new GUI draws explicit local data; the original Pip Boy working county-loader service still lives in crates/pipboy/src/dashboard.rs and its browser assets. A true native Census loader, ZCTA lookup, county clipping, archive cache, offline cold-start restore, physical GNSS and reliable polygon fills have NOT yet been ported. Imported source attributions are not authenticated.
+
+A native build was not executed in this session: Cargo is absent from the execution environment; GitHub Actions branch jobs have reported startup_failure before any steps are created. Passing tests, touch responsiveness and device performance must not be asserted until measured.
+
+## Machine indexing contract
+
+When changing code, update catalog/components.json and catalog/index.json as appropriate. Update catalog/gates.json only when evidence supports milestone changes. Keep independent GUI and original Pip Boy map intact until parity. Source owners must always be clear; do not move the entire host runtime into RB_GIS.
