@@ -6,6 +6,7 @@ Offline-first, compact GIS module extracted from [Pip Boy](https://github.com/ps
 
 ## Start here
 - [Repository navigation and machine index](docs/INDEX.md)
+- [Major milestone roadmap](docs/MAJOR_ROADMAP.md)
 - [Migration plan and responsibilities](docs/MIGRATION.md)
 - [Geospatial literature and best-practices matrix](docs/LITERATURE_MATRIX.md)
 - [Machine component inventory](catalog/components.json)
