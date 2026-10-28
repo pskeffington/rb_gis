@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RB_GIS offline directory package",
+  "description": "Version 1 source declarations are operator-provided; they are not proof of authoritative provenance.",
+  "type": "object",
+  "required": [
+    "schema",
+    "layers"
+  ],
+  "properties": {
+    "schema": {
+      "const": "rb-gis-package/v1"
+    },
+    "description": {
+      "type": "string"
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": [
+          "file",
+          "name",
+          "role",
+          "source",
+          "attribution"
+        ],
+        "properties": {
+          "file": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*\\.geojson$",
+            "maxLength": 128
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "role": {
+            "enum": [
+              "roads",
+              "water",
+              "boundary",
+              "landmarks",
+              "other"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "vintage": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "attribution": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        }
+      }
+    }
+  }
+}
