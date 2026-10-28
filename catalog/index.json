@@ -62,7 +62,8 @@
       "zoom",
       "reference grid",
       "local GeoJSON import",
-      "points, lines and polygon outlines"
+      "points, lines and polygon outlines",
+      "fit to actual measured canvas size"
     ],
     "not_yet": [
       "GNSS receiver",
@@ -73,5 +74,5 @@
     ]
   },
   "release_target": "v0.2 standalone field mapper",
-  "current_blocker": "M0 build and runtime verification"
+  "current_blocker": "GitHub Actions startup_failure (zero jobs), local clone DNS unavailable; compile and formatting unverified"
 }
