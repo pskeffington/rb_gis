@@ -18,6 +18,22 @@ impl eframe::App for MapApp {
     if ui.button("−").clicked(){self.view.zoom=(self.view.zoom-1.0).max(0.0);}
     if ui.button("+").clicked(){self.view.zoom=(self.view.zoom+1.0).min(19.0);}
     ui.checkbox(&mut self.show_grid,"Grid");
+    if ui.button("Fit layer").clicked() {
+      if let Some(layer)=&self.layer {
+        let mut points=Vec::new();
+        for feature in &layer.features {
+          match &feature.geometry {
+            Geometry::Point(p)=>points.push(*p),
+            Geometry::Line(line)=>points.extend(line.iter().copied()),
+            Geometry::Polygon(rings)=>for ring in rings {points.extend(ring.iter().copied());},
+          }
+        }
+        match Viewport::fit_points(&points,480.0,240.0,24.0) {
+          Ok(view)=>{self.view=view;self.message="FITTED LOCAL LAYER — NO GPS".into();}
+          Err(_)=>self.message="FIT FAILED: NO VALID GEOMETRY".into(),
+        }
+      } else {self.message="NO LAYER LOADED".into();}
+    }
     if ui.button("Reset").clicked(){*self=Self::default();}
    });
    ui.horizontal_wrapped(|ui|{
