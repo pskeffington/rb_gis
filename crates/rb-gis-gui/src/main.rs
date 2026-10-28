@@ -313,12 +313,17 @@ impl eframe::App for MapApp {
         self.dropped_files(ctx);
         self.navigation(ctx);
         egui::TopBottomPanel::bottom("operator_status").show(ctx, |ui| {
-            let center_type = if self.manual_center { "MANUAL" } else { "UNLOCATED" };
-            ui.label(format!(
-                "{} | {} | {:.4},{:.4} z{:.1} | {} layers | OFFLINE",
-                self.status,center_type,self.view.center.latitude,self.view.center.longitude,
-                self.view.zoom,self.layers.len(),
-            ));
+            let compact: String = self.status.chars().take(27).collect();
+            ui.horizontal(|ui| {
+                ui.label(compact).on_hover_text(&self.status);
+                ui.separator();
+                ui.label(format!("{}L z{:.1} OFF", self.layers.len(), self.view.zoom))
+                    .on_hover_text(format!(
+                        "{} center: {:.5}, {:.5} / No live GPS",
+                        if self.manual_center { "Manual" } else { "Unlocated" },
+                        self.view.center.latitude, self.view.center.longitude
+                    ));
+            });
         });
         egui::CentralPanel::default().show(ctx, |ui| {
             match self.page {
