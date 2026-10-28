@@ -173,7 +173,7 @@ pub fn load_manifest(path: &Path) -> Result<Vec<MapLayer>, String> {
     Ok(output)
 }
 pub fn visible_coordinates(layers: &[MapLayer]) -> Vec<Coordinate> {
-    layers.iter().filter(|l| l.visible).flat_map(MapLayer::points).collect()
+    layers.iter().filter(|l| l.visible).flat_map(|layer| layer.points()).collect()
 }
 #[cfg(test)]
 mod tests {
@@ -186,6 +186,22 @@ mod tests {
         assert!(safe_filename("../roads.geojson").is_err());
         assert!(safe_filename("roads.geojson").is_ok());
         assert!(safe_filename("sub/roads.geojson").is_err());
+    }
+    #[test] fn package_fixture_loads_real_geometry_types_without_network() {
+        let manifest = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../fixtures/synthetic-package/manifest.json");
+        let layers = load_manifest(&manifest).unwrap();
+        assert_eq!(layers.len(), 4);
+        assert_eq!(layers[0].kind, LayerKind::Roads);
+        assert_eq!(layers[1].kind, LayerKind::Water);
+        assert_eq!(layers[2].kind, LayerKind::Boundary);
+        assert_eq!(layers[3].kind, LayerKind::Landmarks);
+        assert!(layers.iter().all(|l|l.visible));
+        assert!(layers.iter().all(|l|l.vertices()>0));
+        assert!(layers.iter().all(|l| l.provenance.declared_source.contains("Synthetic")));
+        let mut toggled = layers.clone();
+        toggled[0].visible = false;
+        assert!(visible_coordinates(&toggled).len() < visible_coordinates(&layers).len());
     }
     #[test] fn rejects_invalid_schema_without_loading_layers() {
         let file = std::env::temp_dir().join(format!("rb_gis_bad_manifest_{}.json", std::process::id()));
