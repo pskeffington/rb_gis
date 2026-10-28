@@ -1,5 +1,6 @@
-pub mod viewport;
 //! Portable, offline-first WGS84 primitives. No networking, UI, or receiver I/O.
+pub mod viewport;
+pub mod geojson;
 use std::fmt;
 
 const EARTH_RADIUS_METERS: f64 = 6_371_008.8;
