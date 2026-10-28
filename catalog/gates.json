@@ -1,47 +1,138 @@
 {
-  "schema_version": 1,
-  "gates": [
+  "schema_version": 2,
+  "updated": "2026-10-28",
+  "release_targets": [
     {
-      "id": "G0",
-      "title": "Native foundation + indexing",
-      "status": "in-progress",
-      "exit_criteria": "cargo test/fmt/clippy and validate machine indexes"
+      "version": "0.2",
+      "required": [
+        "M0",
+        "M1"
+      ]
     },
     {
-      "id": "G1",
-      "title": "Safe bounded geometry ingest",
-      "status": "planned",
-      "exit_criteria": "GeoJSON golden and malformed-data tests"
+      "version": "0.3",
+      "required": [
+        "M2"
+      ]
     },
     {
-      "id": "G2",
-      "title": "Offline renderer",
-      "status": "planned",
-      "exit_criteria": "320x240 and 480x320 screenshots and antimeridian tests"
+      "version": "0.4",
+      "required": [
+        "M3",
+        "M4"
+      ]
     },
     {
-      "id": "G3",
-      "title": "Verified offline geography",
-      "status": "planned",
-      "exit_criteria": "local cache, vintage, checksums, partial coverage"
+      "version": "0.5",
+      "required": [
+        "M5"
+      ]
     },
     {
-      "id": "G4",
-      "title": "GNSS session lifecycle",
-      "status": "planned",
-      "exit_criteria": "denied, stale, bad accuracy, no-location tests"
-    },
-    {
-      "id": "G5",
-      "title": "Pip Boy integration",
-      "status": "blocked",
-      "exit_criteria": "test parity and host adapter without source duplication"
-    },
-    {
-      "id": "G6",
-      "title": "Physical device validation",
-      "status": "planned",
-      "exit_criteria": "aarch64 device memory, rendering latency, battery/power"
+      "version": "1.0-rc",
+      "required": [
+        "M6"
+      ]
     }
+  ],
+  "milestones": [
+    {
+      "id": "M0",
+      "title": "Build and CI stabilization",
+      "state": "blocked-on-validation",
+      "acceptance": [
+        "cargo fmt",
+        "cargo clippy -D warnings",
+        "cargo test",
+        "manual GUI launch and small viewport screenshots"
+      ]
+    },
+    {
+      "id": "M1",
+      "title": "Native layers and renderer",
+      "state": "in-progress-unverified",
+      "acceptance": [
+        "bounded RFC7946 tests",
+        "holes and antimeridian",
+        "layer ordering",
+        "fit to layer",
+        "320x240 and 480x320 fixtures"
+      ]
+    },
+    {
+      "id": "M2",
+      "title": "Offline source packages",
+      "state": "planned",
+      "acceptance": [
+        "cold-start offline rendering",
+        "provenance and attribution",
+        "checksums and atomic replacement",
+        "archive abuse tests"
+      ]
+    },
+    {
+      "id": "M3",
+      "title": "GNSS lifecycle",
+      "state": "planned",
+      "acceptance": [
+        "manual is not GPS",
+        "explicit consent",
+        "stale and accuracy handling",
+        "fake receiver test"
+      ]
+    },
+    {
+      "id": "M4",
+      "title": "Independent field GUI",
+      "state": "scaffolded",
+      "acceptance": [
+        "navigation and settings",
+        "touch keyboard and contrast tests",
+        "source management",
+        "no Pip Boy dependency"
+      ]
+    },
+    {
+      "id": "M5",
+      "title": "Rust Boy adapter",
+      "state": "planned",
+      "acceptance": [
+        "stable API/IPC",
+        "legacy fixture parity",
+        "rollback capability",
+        "remove duplicated map logic only after parity"
+      ]
+    },
+    {
+      "id": "M6",
+      "title": "Device and security acceptance",
+      "state": "planned",
+      "acceptance": [
+        "macOS and Linux CI",
+        "real ARM64 Pi test",
+        "resource benchmarks",
+        "fuzz/security review"
+      ]
+    },
+    {
+      "id": "M7",
+      "title": "Optional interoperability",
+      "state": "backlog",
+      "acceptance": [
+        "plugin isolation",
+        "opt-in network",
+        "interop regression tests"
+      ]
+    }
+  ],
+  "priority_order": [
+    "M0",
+    "M1",
+    "M2",
+    "M3",
+    "M4",
+    "M5",
+    "M6",
+    "M7"
   ]
 }
