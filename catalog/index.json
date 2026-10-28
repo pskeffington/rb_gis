@@ -32,17 +32,10 @@
     "imported_legacy_js": 5,
     "imported_css": 1,
     "imported_legacy_rust": 1,
-    "imported_tests": 7,
+    "imported_tests": 16,
     "imported_docs": 2
   },
-  "missing_from_legacy_test_inventory": [
-    "tools/test_rustgis_map_import.cjs",
-    "tools/test_rustgis_map_view.cjs",
-    "tools/test_rustgis_online.cjs",
-    "tools/test_rustgis_online_view.cjs",
-    "tools/audit_map_cache.py",
-    "tools/test_audit_map_cache.py"
-  ],
+  "missing_from_legacy_test_inventory": [],
   "validation": {
     "cargo_fmt": "not-run",
     "cargo_clippy": "not-run",
@@ -95,5 +88,11 @@
     "limit_features": 8000,
     "limit_vertices": 120000,
     "status": "code-committed-unverified"
+  },
+  "legacy_test_baseline": {
+    "files": 16,
+    "executed": false,
+    "scope": "county mapping, cache audits, ZIP lookup, RustGIS interchange, rendering, online references, GPS permissions",
+    "path": "migration/pip-boy/tools"
   }
 }
