@@ -14,7 +14,8 @@
     "literature": "docs/LITERATURE_MATRIX.md",
     "navigation": "docs/INDEX.md",
     "components": "catalog/components.json",
-    "gates": "catalog/gates.json"
+    "gates": "catalog/gates.json",
+    "roadmap": "docs/MAJOR_ROADMAP.md"
   },
   "policies": {
     "network_requires_user_consent": true,
@@ -70,5 +71,7 @@
       "polygon fills and styling",
       "full rendering validation"
     ]
-  }
+  },
+  "release_target": "v0.2 standalone field mapper",
+  "current_blocker": "M0 build and runtime verification"
 }
