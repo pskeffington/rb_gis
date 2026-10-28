@@ -1,0 +1,38 @@
+{
+  "schema": "rb-gis-package/v1",
+  "description": "SYNTHETIC TEST DATA - NOT A REAL COUNTY OR NAVIGATION MAP",
+  "layers": [
+    {
+      "file": "roads.geojson",
+      "name": "Synthetic roads",
+      "role": "roads",
+      "source": "Synthetic regression fixture",
+      "vintage": "test-only",
+      "attribution": "Artificial test geometry, not suitable for navigation"
+    },
+    {
+      "file": "water.geojson",
+      "name": "Synthetic water",
+      "role": "water",
+      "source": "Synthetic regression fixture",
+      "vintage": "test-only",
+      "attribution": "Artificial test geometry, not suitable for navigation"
+    },
+    {
+      "file": "boundary.geojson",
+      "name": "Synthetic boundary",
+      "role": "boundary",
+      "source": "Synthetic regression fixture",
+      "vintage": "test-only",
+      "attribution": "Artificial test geometry, not suitable for navigation"
+    },
+    {
+      "file": "landmarks.geojson",
+      "name": "Synthetic landmarks",
+      "role": "landmarks",
+      "source": "Synthetic regression fixture",
+      "vintage": "test-only",
+      "attribution": "Artificial test geometry, not suitable for navigation"
+    }
+  ]
+}
