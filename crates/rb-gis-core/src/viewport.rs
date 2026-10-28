@@ -125,13 +125,14 @@ mod tests {
   assert!(Viewport::fit_points(&[p],20.0,20.0,20.0).is_err());
  }
  #[test] fn zoom_preserves_cursor_geography() {
-  let point=Coordinate::new(42.0,-70.0).unwrap();
-  let mut view=Viewport::new(point,8.0).unwrap();
-  let before=view.screen(point,480.0,320.0);
-  view.zoom_at(1.5,120.0,100.0,480.0,320.0);
-  let after=view.screen(point,480.0,320.0);
-  assert!((before.0-240.0).abs()<1e-6);
-  assert!(after.0.is_finite() && after.1.is_finite());
+  let center=Coordinate::new(42.0,-70.0).unwrap();
+  let target=Coordinate::new(42.005,-69.995).unwrap();
+  let mut view=Viewport::new(center,8.0).unwrap();
+  let (x,y)=view.screen(target,480.0,320.0);
+  view.zoom_at(1.5,x,y,480.0,320.0);
+  let (new_x,new_y)=view.screen(target,480.0,320.0);
+  assert!((new_x-x).abs()<0.01, "cursor longitude must remain anchored");
+  assert!((new_y-y).abs()<0.01, "cursor latitude must remain anchored");
   assert!(view.zoom > 8.0);
  }
  #[test] fn pan_is_finite_at_pole() {
