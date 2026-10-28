@@ -9,3 +9,9 @@ Enter an explicit local GeoJSON file path and choose **Open local file**. Points
 
 ## Fit layer (M1)
 The **Fit layer** action computes a native Web Mercator view from the currently loaded geometry, including shortest-arc longitude wrapping across the antimeridian. It does not change a manual center into a GPS fix. The current GUI fits to a nominal 480x240 map canvas; adapting the fit target to the exact dynamic panel dimensions is the next usability step. This change is committed but has not been compile-tested due to unavailable network access in the build environment.
+
+## Viewport fitting update (2026-10-28)
+The Fit layer control now uses the most recently measured actual central map canvas size, rather than a fixed 480x240 assumption. After a resize, the next rendered frame updates this measurement. The algorithm retains antimeridian shortest-arc handling. **Not runtime-validated**.
+
+## CI investigation
+GitHub Actions runs for this branch report `startup_failure` and an empty jobs list. This occurs before Rust steps execute; verify repository Actions permissions/billing and workflow admission. In addition, source has not yet passed `cargo fmt --check`, Clippy, a native compile, or manual GUI smoke. No test green status is asserted.
