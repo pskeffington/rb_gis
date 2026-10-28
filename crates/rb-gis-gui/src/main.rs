@@ -3,11 +3,11 @@ use eframe::egui::{self, Color32, Pos2, Stroke};
 use rb_gis_core::{Coordinate, viewport::Viewport, geojson::{parse_geojson, Geometry, Layer}};
 use std::path::PathBuf;
 
-struct MapApp { view: Viewport, show_grid: bool, message: String, lat: String, lon: String, file: String, layer: Option<Layer>, map_size: egui::Vec2 }
+struct MapApp { view: Viewport, show_grid: bool, show_points: bool, show_lines: bool, show_polygons: bool, message: String, lat: String, lon: String, file: String, layer: Option<Layer>, map_size: egui::Vec2 }
 impl Default for MapApp {
  fn default()->Self {
   let center=Coordinate::new(0.0,0.0).expect("valid grid reference");
-  Self {view:Viewport::new(center,2.0).expect("valid zoom"), show_grid:true, message:"REFERENCE GRID ONLY — NO GPS FIX".into(), lat:String::new(), lon:String::new(), file:String::new(), layer:None, map_size:egui::vec2(480.0,240.0)}
+  Self {view:Viewport::new(center,2.0).expect("valid zoom"), show_grid:true, show_points:true, show_lines:true, show_polygons:true, message:"REFERENCE GRID ONLY — NO GPS FIX".into(), lat:String::new(), lon:String::new(), file:String::new(), layer:None, map_size:egui::vec2(480.0,240.0)}
  }
 }
 impl eframe::App for MapApp {
@@ -18,6 +18,9 @@ impl eframe::App for MapApp {
     if ui.button("−").clicked(){self.view.zoom=(self.view.zoom-1.0).max(0.0);}
     if ui.button("+").clicked(){self.view.zoom=(self.view.zoom+1.0).min(19.0);}
     ui.checkbox(&mut self.show_grid,"Grid");
+    ui.checkbox(&mut self.show_points,"Points");
+    ui.checkbox(&mut self.show_lines,"Lines");
+    ui.checkbox(&mut self.show_polygons,"Areas");
     if ui.button("Fit layer").clicked() {
       if let Some(layer)=&self.layer {
         let mut points=Vec::new();
@@ -95,9 +98,10 @@ impl eframe::App for MapApp {
      for feature in &layer.features {
        let to_screen=|p: Coordinate| {let (x,y)=self.view.screen(p,size.x as f64,size.y as f64); Pos2::new(rect.min.x+x as f32,rect.min.y+y as f32)};
        match &feature.geometry {
-         Geometry::Point(p)=>{painter.circle_filled(to_screen(*p),3.5,Color32::YELLOW);}
-         Geometry::Line(line)=>{for w in line.windows(2) {let a=to_screen(w[0]);let b=to_screen(w[1]);if (a.x-b.x).abs()<size.x/2.0 {painter.line_segment([a,b],Stroke::new(1.5,Color32::LIGHT_GREEN));}}}
-         Geometry::Polygon(rings)=>{for ring in rings {for w in ring.windows(2){let a=to_screen(w[0]);let b=to_screen(w[1]);if (a.x-b.x).abs()<size.x/2.0 {painter.line_segment([a,b],Stroke::new(1.5,Color32::from_rgb(200,160,70)));}}}}
+         Geometry::Point(p) if self.show_points=>{painter.circle_filled(to_screen(*p),3.5,Color32::YELLOW);}
+         Geometry::Line(line) if self.show_lines=>{for w in line.windows(2) {let a=to_screen(w[0]);let b=to_screen(w[1]);if (a.x-b.x).abs()<size.x/2.0 {painter.line_segment([a,b],Stroke::new(1.5,Color32::LIGHT_GREEN));}}}
+         Geometry::Polygon(rings) if self.show_polygons=>{for ring in rings {for w in ring.windows(2){let a=to_screen(w[0]);let b=to_screen(w[1]);if (a.x-b.x).abs()<size.x/2.0 {painter.line_segment([a,b],Stroke::new(1.5,Color32::from_rgb(200,160,70)));}}}}
+         _=>{}
        }
      }
    }
