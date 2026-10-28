@@ -1,0 +1,185 @@
+/* Shared Rust-Boy offline map styling; both shells use the same controls. */
+.rb-map { min-width:0; min-height:0; display:flex; flex-direction:column; gap:5px; height:100%; width:100%; font:11px ui-monospace, SFMono-Regular, Consolas, monospace; color:#caffb5; }
+.rb-map-toolbar { display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
+.rb-map-button { font:inherit; font-weight:bold; cursor:pointer; color:#caffb5; background:#102619; border:1px solid #597d59; border-radius:3px; padding:5px 8px; min-height:32px; }
+.rb-map-button:hover:not(:disabled),.rb-map-button:focus-visible { border-color:#caffb5; background:#22402a; }
+.rb-map-button:disabled { opacity:.42; cursor:default; }
+.rb-map-stage { position:relative; flex:1 1 auto; min-height:100px; border:1px solid #46664a; border-radius:3px; overflow:hidden; background:#0b1a12; }
+.rb-map-canvas { width:100%; height:100%; display:block; touch-action:none; cursor:grab; }
+.rb-map-canvas:active { cursor:grabbing; }
+.rb-map-status { font-size:10px; line-height:1.2; color:#b2d0a7; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:none; }
+.rb-map-manual { display:flex; gap:5px; align-items:center; flex-wrap:wrap; }
+.rb-map-manual[hidden] { display:none; }
+.rb-map-manual input { min-width:0; flex:1 1 100px; width:100px; background:#0b2013; color:#ddffd4; border:1px solid #597d59; padding:6px; }
+.rb-map-micro-host { height:100%; display:flex; flex-direction:column; min-height:0; }
+.rb-map-mount { flex:1; display:flex; min-height:0; }
+.rb-map-desktop-host { min-height:290px; height:360px; padding:9px; background:#101d15; }
+.micro-device[data-depth="root"] .micro-content:has(.rb-map-micro-host) { height:100%; min-height:0; padding:5px 7px; }
+@media (max-width:520px) {
+  .rb-map-toolbar { gap:3px; }
+  .rb-map-button { min-height:29px; padding:4px 6px; font-size:10px; }
+  .rb-map-status { font-size:9px; }
+}
+@media (max-height:360px) {
+  .rb-map-toolbar { flex-wrap:nowrap; }
+  .rb-map-button { min-height:25px; padding:3px 5px; font-size:9px; }
+  .rb-map-stage { min-height:55px; }
+}
+
+/* Native RustGIS layer manifest is collapsed unless the operator opens it. */
+.rb-map-sources { flex:none; max-width:100%; font:10px ui-monospace, Consolas, monospace;
+  border-top:1px solid #345439; color:#aacfa4; }
+.rb-map-sources[hidden] { display:none; }
+.rb-map-sources summary { cursor:pointer; padding:2px; font-weight:bold; }
+.rb-map-source-text { margin:2px 0; max-height:98px; overflow:auto; white-space:pre-wrap;
+  overflow-wrap:anywhere; font:10px ui-monospace, Consolas, monospace; }
+
+/* Readable, low-height OSM status and attribution on 480x320 micro displays. */
+.rb-map-web-state { flex:none; color:#b7df97; font:9px ui-monospace, Consolas, monospace;
+  line-height:1.1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rb-map-attribution { position:absolute; bottom:2px; right:3px; z-index:1;
+  border-radius:2px; padding:2px 3px; color:#e1ffe1; background:rgba(5,27,17,.85);
+  font:9px ui-monospace, Consolas, monospace; text-decoration:underline; }
+.rb-map-attribution[hidden], .rb-map-button[hidden] { display:none; }
+@media (max-height:360px) {
+  .rb-map-toolbar { flex-wrap:wrap; max-height:58px; overflow-y:auto; }
+  .rb-map-button { min-height:23px; }
+  .rb-map-attribution { font-size:8px; }
+}
+
+/* Reclamation overlay: local manual site records, no remote basemap required. */
+.rb-map-sites { flex:none; min-width:0; max-width:100%; border-top:1px solid #48664b; font-size:10px; }
+.rb-map-sites[hidden] { display:none; }
+.rb-map-sites summary { padding:4px; cursor:pointer; color:#d8f0c4; font-weight:bold; }
+.rb-map-site-status { color:#e6c78d; padding:2px 4px; }
+.rb-map-site-list { max-height:130px; overflow-y:auto; }
+.rb-map-site-row { display:flex; justify-content:space-between; align-items:center; gap:6px;
+  padding:5px; border-top:1px solid #2e4c31; }
+.rb-map-site-row.selected { background:#203b25; }
+.rb-map-site-copy { flex:1; min-width:0; overflow-wrap:anywhere; }
+.rb-map-site-copy strong { display:block; font-size:11px; }
+.rb-map-site-copy small { display:block; font-size:9px; color:#aacf9f; }
+.rb-map-site-pager { display:flex; align-items:center; gap:5px; padding:4px; }
+.rb-map-site-pager .rb-map-button { min-height:28px; }
+.rb-map-site-pager span { min-width:36px; text-align:center; }
+@media (max-height:360px) {
+  .rb-map-site-list { max-height:65px; }
+  .rb-map-sites summary { padding:2px; }
+}
+
+/* Original Rust-Boy phosphor cartography over verified source geometry. */
+.rb-map-stage::after { content:""; position:absolute; inset:0; z-index:2;
+  pointer-events:none; opacity:.14;
+  background:repeating-linear-gradient(to bottom, transparent 0px,
+    rgba(13, 37, 23, .2) 2px, rgba(3, 13, 7, .34) 3px); }
+.rb-map-base-credit { position:absolute; bottom:2px; left:4px; z-index:3;
+  font:9px ui-monospace, Consolas, monospace; color:#d8ffb9;
+  text-decoration:none; border:1px solid #537355;
+  padding:2px 4px; background:rgba(7, 20, 10, .9); }
+.rb-map-base-credit[hidden] { display:none; }
+.rb-map-stage { box-shadow:inset 0 0 20px rgba(35, 94, 37, .18); }
+.rb-map-canvas { image-rendering:auto; }
+@media (prefers-reduced-motion: reduce) {
+  .rb-map-stage::after { opacity:0; }
+}
+@media (max-height:360px) {
+  .rb-map-base-credit { font-size:8px; padding:1px 3px; }
+}
+
+/* Shown only after a location failure: no map space spent while GPS is working. */
+.rb-map-gps-help { flex:none; min-width:0; border:1px solid #796440;
+  border-radius:3px; color:#f0d79e; background:#231d12;
+  font:10px ui-monospace, Consolas, monospace; }
+.rb-map-gps-help[hidden] { display:none; }
+.rb-map-gps-help summary { padding:4px 6px; cursor:pointer; font-weight:700; }
+.rb-map-gps-help-text { padding:4px 7px 7px; line-height:1.35;
+  overflow-wrap:anywhere; }
+@media (max-height:360px) {
+  .rb-map-gps-help summary { padding:2px 5px; }
+  .rb-map-gps-help-text { max-height:68px; overflow-y:auto; }
+}
+
+/* Compact MAP: keep the chart visible while secondary sources remain reachable. */
+.rb-map-tools { flex:none; min-width:0; border-top:1px solid #345439; color:#c6e9b4; font-size:10px; }
+.rb-map-tools summary { cursor:pointer; padding:3px 5px; font-weight:bold; }
+.rb-map-extra { display:flex; gap:4px; flex-wrap:wrap; padding:4px; max-height:96px; overflow:auto; }
+.rb-map-toolbar .rb-map-button { flex:1 0 auto; min-width:36px; }
+.rb-map-toolbar .rb-map-button:focus-visible, .rb-map-tools summary:focus-visible {
+  outline:2px solid #dbf4b2; outline-offset:1px;
+}
+@media (max-width:520px) {
+  .rb-map-toolbar .rb-map-button { min-height:38px; padding:5px 7px; font-size:11px; }
+  .rb-map-toolbar { flex-wrap:wrap; max-height:none; overflow:visible; }
+}
+@media (max-height:360px) {
+  .rb-map-toolbar .rb-map-button { min-height:34px; }
+  .rb-map-toolbar { flex-wrap:nowrap; overflow-x:auto; overflow-y:hidden; max-height:none; }
+  .rb-map-toolbar .rb-map-button { flex:0 0 auto; }
+  .rb-map-stage { min-height:70px; }
+  .rb-map-extra { max-height:70px; }
+}
+
+/* Official Census map layers: collapsed by default, keyboard/touch reachable. */
+.rb-map-layers { flex:none; min-width:0; border-top:1px solid #406443;
+  font:10px ui-monospace, Consolas, monospace; color:#c5e7ae; }
+.rb-map-layers summary { cursor:pointer; padding:3px 5px; font-weight:700; }
+.rb-map-layers summary:focus-visible, .rb-map-layer-button:focus-visible {
+  outline:2px solid #e9f4bd; outline-offset:1px;
+}
+.rb-map-layer-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:4px; padding:4px; }
+.rb-map-layer-button { min-width:0; min-height:36px; padding:5px 3px;
+  white-space:nowrap; }
+.rb-map-layer-muted { color:#8ba48b; border-color:#384b3d; background:#0d1a12; }
+.rb-map-layer-button[aria-pressed="true"] { border-color:#9fcf7f; }
+@media (max-width:520px) {
+  .rb-map-layer-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .rb-map-layer-button { min-height:38px; font-size:10px; }
+}
+@media (max-height:360px) {
+  .rb-map-layer-grid { max-height:86px; overflow:auto; }
+  .rb-map-layers summary { padding:2px 4px; }
+}
+
+/* One-tap ZIP entry; panel is collapsed by default to preserve map pixels. */
+.rb-map-zip { flex:none; min-width:0; max-height:156px; overflow-y:auto;
+  border:1px solid #456a45; padding:4px; background:#0e2114;
+  color:#c3ecad; font:10px ui-monospace,Consolas,monospace; }
+.rb-map-zip[hidden] { display:none; }
+.rb-map-zip-form { display:flex; gap:5px; align-items:stretch; }
+.rb-map-zip-form input { min-width:0; flex:1 1 90px; width:95px; border:1px solid #71966a;
+  border-radius:3px; background:#08180e; color:#f0ffdd; padding:5px 8px;
+  font:12px ui-monospace,Consolas,monospace; letter-spacing:.09em; }
+.rb-map-zip-form .rb-map-button { min-height:36px; flex:1 1 110px; }
+.rb-map-zip input:focus-visible, .rb-map-zip button:focus-visible {
+  outline:2px solid #eaffb8;outline-offset:1px; }
+.rb-map-zip-status { padding:4px 0; white-space:normal; overflow-wrap:anywhere;
+  line-height:1.35; color:#e1df9c; }
+.rb-map-zip-candidates { display:flex;flex-wrap:wrap;gap:4px;
+  max-height:68px;overflow-y:auto; }
+.rb-map-zip-choice { min-height:36px;flex:1 1 150px;text-align:left; }
+.rb-map-zip-pager { display:flex; gap:4px; align-items:center; padding:2px 0; }
+.rb-map-zip-pager .rb-map-button { min-height:34px;flex:1 1 auto; }
+.rb-map-zip-list { white-space:pre-wrap; overflow-wrap:anywhere;
+  color:#c1eaba;max-height:50px;overflow-y:auto; }
+@media (max-height:360px) {
+  .rb-map-zip { max-height:112px; }
+  .rb-map-zip-form .rb-map-button, .rb-map-zip-pager .rb-map-button {
+    min-height:34px;
+  }
+}
+\n.rb-map-zip-list-heading { padding:3px 0; font-weight:bold; }\n.rb-map-zip-list-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; }\n.rb-map-zip-list-item { min-height:38px; padding:4px; font-size:12px; letter-spacing:.04em; }\n
+/* Location/source ingestion lives in universal Settings, away from navigation. */
+.rb-map-settings { display:flex; flex-direction:column; height:auto; min-height:0; gap:8px; }
+.rb-map-settings .rb-map-stage[hidden] { display:none; }
+.rb-map-settings .rb-map-toolbar { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); max-height:none; overflow:visible; }
+.rb-map-location-copy { font-size:11px; margin:0; }
+.rb-map-settings-host { min-width:0; }
+.rb-map-settings .rb-map-manual:not([hidden]) { display:grid; }
+.rb-map-settings .rb-map-button { min-height:44px; }
+
+.rb-map-canvas-only { display:flex; flex-direction:column; height:100%; min-height:0; padding:0; gap:0; }
+.rb-map-canvas-only .rb-map-stage { flex:1; min-height:0; height:100%; }
+
+.micro-device[data-depth="root"] .micro-content:has(.rb-map-canvas-only) { padding:0; }
+.rb-map-canvas-only .rb-map-stage { border:0; border-radius:0; }
