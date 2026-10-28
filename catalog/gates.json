@@ -46,7 +46,7 @@
         "cargo test",
         "manual GUI launch and small viewport screenshots"
       ],
-      "diagnostic": "GitHub Actions startup_failure with zero jobs; source build has not run"
+      "diagnostic": "No Cargo binary in execution environment, GitHub Actions startup_failure with 0 jobs; compile/format/clippy/manual GUI tests pending"
     },
     {
       "id": "M1",
@@ -58,18 +58,20 @@
         "layer ordering",
         "fit to layer",
         "320x240 and 480x320 fixtures"
-      ]
+      ],
+      "progress": "Native multi-layer GUI and category paint source committed; holes/fill/clipping and build validation outstanding"
     },
     {
       "id": "M2",
       "title": "Offline source packages",
-      "state": "planned",
+      "state": "partial-unverified",
       "acceptance": [
         "cold-start offline rendering",
         "provenance and attribution",
         "checksums and atomic replacement",
         "archive abuse tests"
-      ]
+      ],
+      "progress": "Local GeoJSON directory manifest, bounded import and source declarations committed. Census archives, official cache, signatures/checksums and cold-start restore not implemented."
     },
     {
       "id": "M3",
@@ -85,13 +87,14 @@
     {
       "id": "M4",
       "title": "Independent field GUI",
-      "state": "scaffolded",
+      "state": "in-progress-unverified",
       "acceptance": [
         "navigation and settings",
         "touch keyboard and contrast tests",
         "source management",
         "no Pip Boy dependency"
-      ]
+      ],
+      "progress": "Five-page independent GUI implemented in source; physical device and interaction validation not performed."
     },
     {
       "id": "M5",
