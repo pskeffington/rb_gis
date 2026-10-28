@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "components": [
+    {
+      "id": "core",
+      "path": "crates/rb-gis-core/src/lib.rs",
+      "language": "rust",
+      "status": "native",
+      "purpose": "WGS84 coordinate validation, approximate distances, position freshness",
+      "gate": "G0"
+    },
+    {
+      "id": "legacy-core",
+      "path": "migration/pip-boy/crates/pipboy-core/src/scout_gis.rs",
+      "language": "rust",
+      "status": "imported-reference",
+      "purpose": "Pip Boy Point GeoJSON interchange and waypoint implementation",
+      "gate": "G1"
+    },
+    {
+      "id": "map-view",
+      "path": "migration/pip-boy/crates/pipboy/assets/map.js",
+      "language": "javascript",
+      "status": "imported-reference",
+      "purpose": "Legacy browser viewport and projections",
+      "gate": "G2"
+    },
+    {
+      "id": "county",
+      "path": "migration/pip-boy/crates/pipboy/assets/map-county.js",
+      "language": "javascript",
+      "status": "imported-reference",
+      "purpose": "County GIS layer display",
+      "gate": "G3"
+    },
+    {
+      "id": "import",
+      "path": "migration/pip-boy/crates/pipboy/assets/map-import.js",
+      "language": "javascript",
+      "status": "imported-reference",
+      "purpose": "Explicit GIS data import",
+      "gate": "G1"
+    },
+    {
+      "id": "online",
+      "path": "migration/pip-boy/crates/pipboy/assets/map-online.js",
+      "language": "javascript",
+      "status": "imported-reference",
+      "purpose": "Operator-authorized online reference source",
+      "gate": "G3"
+    },
+    {
+      "id": "zip",
+      "path": "migration/pip-boy/crates/pipboy/assets/map-zip.js",
+      "language": "javascript",
+      "status": "imported-reference",
+      "purpose": "ZIP/ZCTA-to-county lookup",
+      "gate": "G3"
+    },
+    {
+      "id": "skin",
+      "path": "migration/pip-boy/crates/pipboy/assets/map.css",
+      "language": "css",
+      "status": "imported-reference",
+      "purpose": "Existing Pip Boy phosphor presentation; host-specific",
+      "gate": "G5"
+    },
+    {
+      "id": "test_county_map",
+      "path": "migration/pip-boy/tools/test_county_map.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy regression test; host dependencies not yet assessed",
+      "gate": "G5"
+    },
+    {
+      "id": "test_map_boot",
+      "path": "migration/pip-boy/tools/test_map_boot.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy regression test; host dependencies not yet assessed",
+      "gate": "G5"
+    },
+    {
+      "id": "test_map_gps_permissions",
+      "path": "migration/pip-boy/tools/test_map_gps_permissions.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy regression test; host dependencies not yet assessed",
+      "gate": "G5"
+    },
+    {
+      "id": "test_map_layers",
+      "path": "migration/pip-boy/tools/test_map_layers.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy regression test; host dependencies not yet assessed",
+      "gate": "G5"
+    },
+    {
+      "id": "test_map_viewport",
+      "path": "migration/pip-boy/tools/test_map_viewport.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy regression test; host dependencies not yet assessed",
+      "gate": "G5"
+    },
+    {
+      "id": "test_map_zip",
+      "path": "migration/pip-boy/tools/test_map_zip.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy regression test; host dependencies not yet assessed",
+      "gate": "G5"
+    },
+    {
+      "id": "test_reclamation_map",
+      "path": "migration/pip-boy/tools/test_reclamation_map.cjs",
+      "language": "javascript",
+      "status": "imported-unverified",
+      "purpose": "Legacy regression test; host dependencies not yet assessed",
+      "gate": "G5"
+    },
+    {
+      "id": "scout-gps-doc",
+      "path": "migration/pip-boy/docs/SCOUT_GPS_MAP.md",
+      "language": "markdown",
+      "status": "imported-reference",
+      "purpose": "Legacy runtime and location constraints",
+      "gate": "G5"
+    },
+    {
+      "id": "tak-doc",
+      "path": "migration/pip-boy/docs/SCOUT_GIS_TAK.md",
+      "language": "markdown",
+      "status": "imported-reference",
+      "purpose": "Interop design reference, not shipped TAK capability",
+      "gate": "G6"
+    }
+  ],
+  "status_definitions": {
+    "native": "in active Rust workspace",
+    "imported-reference": "copied legacy artifact, not a native port",
+    "imported-unverified": "copied test, standalone execution not verified"
+  }
+}
