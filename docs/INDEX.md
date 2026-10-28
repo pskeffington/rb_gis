@@ -6,7 +6,8 @@
 
 ## Read order for maintainers and coding agents
 1. [README](../README.md) — product boundary and getting started
-2. [Migration plan](MIGRATION.md) — ownership, portability and acceptance gates
+2. [Major roadmap](MAJOR_ROADMAP.md) — milestone sequence and release gates
+3. [Migration plan](MIGRATION.md) — ownership, portability and acceptance gates
 3. [Component inventory](../catalog/components.json) — verified paths and implementation maturity
 4. [Literature matrix](LITERATURE_MATRIX.md) — research references and design tradeoffs
 5. [Gate ledger](../catalog/gates.json) — criteria for promotion to production
