@@ -1,20 +1,47 @@
-# Standalone RB_GIS GUI (first native viewport)
+# Standalone RB_GIS Field GUI
 
-Run `cargo run -p rb-gis-gui` from repository root. A resizable 480x320 native operator window opens; minimum dimensions 320x240. This is a deliberately empty reference grid, **not a fabricated map**. Manual-center input does not request or represent GPS. Pan by dragging; zoom by wheel or buttons; Reset restores unlocated grid. No network access, telemetry, saved location, or Pip Boy dependency.
+**Status (2026-10-28): committed source, Rust build/runtime unverified.**
 
-Native geometry and offline county/GeoJSON layers are pending. Imported Pip Boy assets in `migration/pip-boy/` are preserved for behavioral parity only. The GUI is currently an exploratory development shell, not a full-featured map. Hardware performance and CI build still require verification.
+From the repository root, with Rust/Cargo installed:
 
-## Native local layer import
-Enter an explicit local GeoJSON file path and choose **Open local file**. Points, line segments and polygon outlines render in the viewport. Accepted input is bounded to 2 MiB, 2,000 features and 30,000 vertices. Files are read only on the operator's explicit action. The project does not yet ship a file chooser, map package downloader, fill renderer or native county cache. Rendering and build are awaiting native runtime verification.
+    cargo run -p rb-gis-gui
 
-## Fit layer (M1)
-The **Fit layer** action computes a native Web Mercator view from the currently loaded geometry, including shortest-arc longitude wrapping across the antimeridian. It does not change a manual center into a GPS fix. The current GUI fits to a nominal 480x240 map canvas; adapting the fit target to the exact dynamic panel dimensions is the next usability step. This change is committed but has not been compile-tested due to unavailable network access in the build environment.
+Targets a 480x320 window with a 320x240 minimum. Nothing in this executable depends on Pip Boy, a Rust Boy server, external maps, or a location provider.
 
-## Viewport fitting update (2026-10-28)
-The Fit layer control now uses the most recently measured actual central map canvas size, rather than a fixed 480x240 assumption. After a resize, the next rendered frame updates this measurement. The algorithm retains antimeridian shortest-arc handling. **Not runtime-validated**.
+## Operator interface
 
-## CI investigation
-GitHub Actions runs for this branch report `startup_failure` and an empty jobs list. This occurs before Rust steps execute; verify repository Actions permissions/billing and workflow admission. In addition, source has not yet passed `cargo fmt --check`, Clippy, a native compile, or manual GUI smoke. No test green status is asserted.
+| Tab | Controls | Runtime behavior |
+| --- | --- | --- |
+| MAP | drag to pan, wheel to zoom around cursor, +/- zoom, FIT, GRID, LAYERS | Native offline renderer, reference grid when no source has been loaded |
+| LYR | show/hide and FIT each loaded layer, remove individual layer, clear all | Changes view only; disk files unchanged |
+| SRC | drag/drop local GeoJSON or an offline manifest, or enter local paths; assign role, source/vintage/credit | Multiple WGS84 layers, bounded read; manifest import replaces all layers only after complete validation |
+| GPS | manual latitude/longitude center | This is explicitly NOT a GPS fix; no receiver adapter has shipped |
+| SET | grid/labels, reset view | Resets camera without removing data |
 
-## Layer visibility pass
-The standalone window now provides separate Points, Lines and Areas visibility toggles, in addition to the reference grid toggle. These controls only affect rendering: the local imported geometry remains in memory and is not deleted. The status line distinguishes local GeoJSON geography from no loaded geography. These are generic geometry-type switches, **not yet** the dedicated Roads/Water/Landmarks/Boundary classification controls of Pip Boy. Compile and hardware validation remain pending.
+The native map painter colors categories separately: roads (green), water (cyan), boundary (amber), landmarks (yellow), other (gray). Points, lines, and polygon **outlines** are drawn with a conservative seam check and a limited label budget. Polygon filling and holes are deliberately not yet implemented. No fabricated basemap or local fix is shown.
+
+## Input capabilities
+
+The native GeoJSON parser accepts feature collections with Point, MultiPoint, LineString, MultiLineString, Polygon and MultiPolygon geometry, with strict WGS84 lon/lat bounds. It rejects unsupported geometry types rather than silently skipping them. Maximum single file: 2 MiB / 2,000 expanded features / 30,000 vertices; maximum aggregate package: 12 layers, 8,000 features, 120,000 vertices. Limits are safety budgets, not a guarantee of device performance.
+
+Manual GeoJSON imports require the operator to pick a category and declare source/vintage/credit. These fields are **claims by the user**, not an independently checked authority. Imports and layers are volatile application memory, never a persistent track.
+
+Open a manifest at SRC using an absolute local filename, or drag a .json manifest onto the window. See [Offline package specification](OFFLINE_PACKAGE.md). Synthetic regression data is available under fixtures/synthetic-package and is **never** loaded automatically.
+
+## Legacy map parity status
+
+The original Pip Boy maps already had Census 2025 county roads/water/boundaries, ZIP/ZCTA lookup, cached shapefile packages, and optional online references. Copies of map.js, map-county.js, map-zip.js and related files are preserved under migration/pip-boy. However, the legacy browser renderer relied on Rust HTTP endpoints inside pip_boy/src/dashboard.rs, which have NOT been extracted into RB_GIS.
+
+Thus the new GUI can display an explicitly imported GeoJSON or RB_GIS local directory package, but it **cannot yet** fetch or restore the old Census ZIP county cache directly. The remaining backend extraction is documented in [Legacy loader handoff](LEGACY_LOADER_HANDOFF.md). Do not remove Pip Boy's working map or mark full feature parity.
+
+## Verification
+
+Commands to run in a local checkout:
+
+    cargo fmt --all
+    cargo fmt --all -- --check
+    cargo clippy --workspace --all-targets -- -D warnings
+    cargo test --workspace
+    cargo run -p rb-gis-gui
+
+Use the synthetic test package only for verifying the renderer; do not use it as navigation geography. Verify both compact window sizes and actual on-device input, then record screenshots and measured performance. As of this pass, no compiled GUI or hardware test has been observed; GitHub Actions for the branch previously reported startup_failure and zero jobs.
