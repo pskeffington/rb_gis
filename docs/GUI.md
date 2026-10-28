@@ -15,3 +15,6 @@ The Fit layer control now uses the most recently measured actual central map can
 
 ## CI investigation
 GitHub Actions runs for this branch report `startup_failure` and an empty jobs list. This occurs before Rust steps execute; verify repository Actions permissions/billing and workflow admission. In addition, source has not yet passed `cargo fmt --check`, Clippy, a native compile, or manual GUI smoke. No test green status is asserted.
+
+## Layer visibility pass
+The standalone window now provides separate Points, Lines and Areas visibility toggles, in addition to the reference grid toggle. These controls only affect rendering: the local imported geometry remains in memory and is not deleted. The status line distinguishes local GeoJSON geography from no loaded geography. These are generic geometry-type switches, **not yet** the dedicated Roads/Water/Landmarks/Boundary classification controls of Pip Boy. Compile and hardware validation remain pending.
