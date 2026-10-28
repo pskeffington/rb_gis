@@ -45,7 +45,8 @@
         "cargo clippy -D warnings",
         "cargo test",
         "manual GUI launch and small viewport screenshots"
-      ]
+      ],
+      "diagnostic": "GitHub Actions startup_failure with zero jobs; source build has not run"
     },
     {
       "id": "M1",
