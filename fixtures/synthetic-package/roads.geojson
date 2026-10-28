@@ -1,0 +1,28 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SYNTHETIC TEST ROAD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0,
+            0
+          ],
+          [
+            0.018,
+            0.01
+          ],
+          [
+            0.03,
+            0.011
+          ]
+        ]
+      }
+    }
+  ]
+}
