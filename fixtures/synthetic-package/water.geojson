@@ -1,0 +1,38 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SYNTHETIC TEST WATER"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0.012,
+              -0.005
+            ],
+            [
+              0.027,
+              -0.005
+            ],
+            [
+              0.027,
+              0.006
+            ],
+            [
+              0.012,
+              0.006
+            ],
+            [
+              0.012,
+              -0.005
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
