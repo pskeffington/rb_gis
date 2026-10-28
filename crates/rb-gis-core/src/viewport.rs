@@ -20,6 +20,32 @@ impl Viewport {
         (width/2.0+dx,height/2.0+(y-cy)*scale)
     }
 
+
+    /// Zoom around an on-screen cursor, preserving the geographic point under
+    /// that cursor where the Web Mercator latitude range permits it.
+    pub fn zoom_at(&mut self, delta: f64, px: f64, py: f64, width: f64, height: f64) {
+        if ![delta, px, py, width, height].iter().all(|v| v.is_finite())
+            || width <= 0.0 || height <= 0.0 { return; }
+        let previous = self.zoom;
+        let next = (previous + delta).clamp(0.0, 19.0);
+        if (next - previous).abs() < f64::EPSILON { return; }
+        let (cx, cy) = Self::project(self.center);
+        let old_scale = 256.0 * 2_f64.powf(previous);
+        let new_scale = 256.0 * 2_f64.powf(next);
+        let off_x = px - width / 2.0;
+        let off_y = py - height / 2.0;
+        let anchor_x = cx + off_x / old_scale;
+        let anchor_y = cy + off_y / old_scale;
+        let new_cx = (anchor_x - off_x / new_scale).rem_euclid(1.0);
+        let new_cy = (anchor_y - off_y / new_scale).clamp(0.0, 1.0);
+        let lat = (std::f64::consts::PI * (1.0 - 2.0 * new_cy))
+            .sinh().atan().to_degrees();
+        if let Ok(center) = Coordinate::new(lat, new_cx * 360.0 - 180.0) {
+            self.center = center;
+            self.zoom = next;
+        }
+    }
+
     /// Fit actual coordinates into a viewport with padding. Antimeridian is handled
     /// using the shortest longitude arc, not a naive [-180, 180] bbox.
     pub fn fit_points(points: &[Coordinate], width: f64, height: f64, padding: f64)
@@ -97,6 +123,16 @@ mod tests {
   assert!(Viewport::fit_points(&[],480.0,320.0,20.0).is_err());
   let p=Coordinate::new(0.0,0.0).unwrap();
   assert!(Viewport::fit_points(&[p],20.0,20.0,20.0).is_err());
+ }
+ #[test] fn zoom_preserves_cursor_geography() {
+  let point=Coordinate::new(42.0,-70.0).unwrap();
+  let mut view=Viewport::new(point,8.0).unwrap();
+  let before=view.screen(point,480.0,320.0);
+  view.zoom_at(1.5,120.0,100.0,480.0,320.0);
+  let after=view.screen(point,480.0,320.0);
+  assert!((before.0-240.0).abs()<1e-6);
+  assert!(after.0.is_finite() && after.1.is_finite());
+  assert!(view.zoom > 8.0);
  }
  #[test] fn pan_is_finite_at_pole() {
   let mut v=Viewport::new(Coordinate::new(85.0,0.0).unwrap(),1.0).unwrap();
