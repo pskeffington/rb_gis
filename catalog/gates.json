@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "gates": [
+    {
+      "id": "G0",
+      "title": "Native foundation + indexing",
+      "status": "in-progress",
+      "exit_criteria": "cargo test/fmt/clippy and validate machine indexes"
+    },
+    {
+      "id": "G1",
+      "title": "Safe bounded geometry ingest",
+      "status": "planned",
+      "exit_criteria": "GeoJSON golden and malformed-data tests"
+    },
+    {
+      "id": "G2",
+      "title": "Offline renderer",
+      "status": "planned",
+      "exit_criteria": "320x240 and 480x320 screenshots and antimeridian tests"
+    },
+    {
+      "id": "G3",
+      "title": "Verified offline geography",
+      "status": "planned",
+      "exit_criteria": "local cache, vintage, checksums, partial coverage"
+    },
+    {
+      "id": "G4",
+      "title": "GNSS session lifecycle",
+      "status": "planned",
+      "exit_criteria": "denied, stale, bad accuracy, no-location tests"
+    },
+    {
+      "id": "G5",
+      "title": "Pip Boy integration",
+      "status": "blocked",
+      "exit_criteria": "test parity and host adapter without source duplication"
+    },
+    {
+      "id": "G6",
+      "title": "Physical device validation",
+      "status": "planned",
+      "exit_criteria": "aarch64 device memory, rendering latency, battery/power"
+    }
+  ]
+}
