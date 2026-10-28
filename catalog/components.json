@@ -150,7 +150,7 @@
       "path": "crates/rb-gis-gui/src/main.rs",
       "language": "rust",
       "status": "native-unverified",
-      "purpose": "Independent 480x320 eframe mapping development window",
+      "purpose": "Independent small-screen GUI: viewport, manual center, local import, fit and per-geometry visibility",
       "gate": "G2"
     },
     {
