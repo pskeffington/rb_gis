@@ -43,5 +43,28 @@
     "cargo_fmt": "not-run",
     "cargo_clippy": "not-run",
     "legacy_suite": "not-run"
+  },
+  "entrypoints": [
+    "README.md",
+    "docs/INDEX.md",
+    "docs/GUI.md",
+    "docs/MIGRATION.md"
+  ],
+  "gui": {
+    "crate": "crates/rb-gis-gui",
+    "run": "cargo run -p rb-gis-gui",
+    "status": "scaffolded-unverified",
+    "features": [
+      "manual center",
+      "Web Mercator viewport",
+      "drag pan",
+      "zoom",
+      "reference grid"
+    ],
+    "not_yet": [
+      "real layers",
+      "GNSS receiver",
+      "Pip Boy adapter"
+    ]
   }
 }
