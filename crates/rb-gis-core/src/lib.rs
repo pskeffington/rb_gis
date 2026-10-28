@@ -1,3 +1,4 @@
+pub mod viewport;
 //! Portable, offline-first WGS84 primitives. No networking, UI, or receiver I/O.
 use std::fmt;
 
