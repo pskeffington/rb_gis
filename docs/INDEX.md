@@ -11,6 +11,8 @@
 4. [Literature matrix](LITERATURE_MATRIX.md) — research references and design tradeoffs
 5. [Gate ledger](../catalog/gates.json) — criteria for promotion to production
 
+- [Standalone GUI](GUI.md) — micro-display application and launch command
+
 ## Code boundaries
 - `crates/rb-gis-core/`: native, independently owned Rust library. Only actual workspace member.
 - `migration/pip-boy/`: **archived working-source copies** from Pip Boy. Not part of the RB_GIS runtime. Must not be assumed compiled, linked or regression-tested.
