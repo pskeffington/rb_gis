@@ -15,7 +15,11 @@
     "navigation": "docs/INDEX.md",
     "components": "catalog/components.json",
     "gates": "catalog/gates.json",
-    "roadmap": "docs/MAJOR_ROADMAP.md"
+    "roadmap": "docs/MAJOR_ROADMAP.md",
+    "gui": "docs/GUI.md",
+    "package": "docs/OFFLINE_PACKAGE.md",
+    "package_schema": "catalog/package_schema.json",
+    "backend_handoff": "docs/LEGACY_LOADER_HANDOFF.md"
   },
   "policies": {
     "network_requires_user_consent": true,
@@ -40,9 +44,11 @@
     "tools/test_audit_map_cache.py"
   ],
   "validation": {
-    "cargo_test": "not-run",
     "cargo_fmt": "not-run",
     "cargo_clippy": "not-run",
+    "cargo_test": "not-run",
+    "gui_runtime": "not-run",
+    "package_json_fixture": "parsed-structure-checked",
     "legacy_suite": "not-run"
   },
   "entrypoints": [
@@ -54,27 +60,40 @@
   "gui": {
     "crate": "crates/rb-gis-gui",
     "run": "cargo run -p rb-gis-gui",
-    "status": "scaffolded-unverified",
+    "status": "native-source-committed-build-unverified",
     "features": [
-      "manual center",
-      "Web Mercator viewport",
-      "drag pan",
-      "zoom",
-      "reference grid",
-      "local GeoJSON import",
-      "points, lines and polygon outlines",
-      "fit to actual measured canvas size",
-      "geometry-type visibility toggles: points/lines/areas",
-      "local map source/no geography status"
+      "independent MAP/LYR/SRC/GPS/SET tabs",
+      "320x240 minimum and 480x320 default",
+      "Web Mercator pan and cursor-anchored zoom",
+      "fit visible or individual layer",
+      "reference grid; no invented basemap",
+      "local GeoJSON import with explicit category",
+      "multi-layer roads/water/boundaries/landmarks/other visibility",
+      "local offline manifest import with atomic in-memory replacement",
+      "declared provenance, attribution and source vintage",
+      "native line, point and polygon outline rendering",
+      "local drag-and-drop import",
+      "manual center labelled NOT GPS"
     ],
     "not_yet": [
-      "GNSS receiver",
-      "Pip Boy adapter",
-      "county-specific map packages",
-      "polygon fills and styling",
-      "full rendering validation"
+      "original Census TIGER ZIP/SHP/DBF cache reader",
+      "original ZIP/ZCTA county loading and boundary service",
+      "verified offline source cache and cold-start restore",
+      "polygon fill with holes and robust clipping",
+      "physical GNSS receiver and follow mode",
+      "Pip Boy host adapter",
+      "native build/run/GUI and hardware validation"
     ]
   },
   "release_target": "v0.2 standalone field mapper",
-  "current_blocker": "GitHub Actions startup_failure (zero jobs), local clone DNS unavailable; compile and formatting unverified"
+  "current_blocker": "No Rust/Cargo toolchain in execution environment and GitHub Actions startup_failure with zero jobs; compile/format/clippy/runtime unverified",
+  "offline_package": {
+    "schema": "rb-gis-package/v1",
+    "schema_path": "catalog/package_schema.json",
+    "fixture_manifest": "fixtures/synthetic-package/manifest.json",
+    "limit_layers": 12,
+    "limit_features": 8000,
+    "limit_vertices": 120000,
+    "status": "code-committed-unverified"
+  }
 }
