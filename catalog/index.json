@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "project": "rb_gis",
+  "updated": "2026-10-28",
+  "source_repo": "pskeffington/pip_boy",
+  "scope": "offline-first micro GIS",
+  "entrypoints": [
+    "README.md",
+    "docs/MIGRATION.md",
+    "docs/LITERATURE_MATRIX.md"
+  ],
+  "crates": [
+    {
+      "path": "crates/rb-gis-core",
+      "status": "scaffolded",
+      "responsibility": "validated WGS84 positions, freshness, approximate spherical distances"
+    }
+  ],
+  "gates": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "G6"
+  ],
+  "policies": {
+    "no_automatic_network": true,
+    "no_synthetic_location": true,
+    "no_location_persistence_by_default": true,
+    "upstream_rustgis_read_only": true
+  },
+  "literature": "docs/LITERATURE_MATRIX.md"
+}
