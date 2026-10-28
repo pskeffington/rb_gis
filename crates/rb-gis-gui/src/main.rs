@@ -3,11 +3,11 @@ use eframe::egui::{self, Color32, Pos2, Stroke};
 use rb_gis_core::{Coordinate, viewport::Viewport, geojson::{parse_geojson, Geometry, Layer}};
 use std::path::PathBuf;
 
-struct MapApp { view: Viewport, show_grid: bool, message: String, lat: String, lon: String, file: String, layer: Option<Layer> }
+struct MapApp { view: Viewport, show_grid: bool, message: String, lat: String, lon: String, file: String, layer: Option<Layer>, map_size: egui::Vec2 }
 impl Default for MapApp {
  fn default()->Self {
   let center=Coordinate::new(0.0,0.0).expect("valid grid reference");
-  Self {view:Viewport::new(center,2.0).expect("valid zoom"), show_grid:true, message:"REFERENCE GRID ONLY — NO GPS FIX".into(), lat:String::new(), lon:String::new(), file:String::new(), layer:None}
+  Self {view:Viewport::new(center,2.0).expect("valid zoom"), show_grid:true, message:"REFERENCE GRID ONLY — NO GPS FIX".into(), lat:String::new(), lon:String::new(), file:String::new(), layer:None, map_size:egui::vec2(480.0,240.0)}
  }
 }
 impl eframe::App for MapApp {
@@ -28,7 +28,7 @@ impl eframe::App for MapApp {
             Geometry::Polygon(rings)=>for ring in rings {points.extend(ring.iter().copied());},
           }
         }
-        match Viewport::fit_points(&points,480.0,240.0,24.0) {
+        match Viewport::fit_points(&points,self.map_size.x as f64,self.map_size.y as f64,16.0) {
           Ok(view)=>{self.view=view;self.message="FITTED LOCAL LAYER — NO GPS".into();}
           Err(_)=>self.message="FIT FAILED: NO VALID GEOMETRY".into(),
         }
@@ -63,6 +63,7 @@ impl eframe::App for MapApp {
   });
   egui::CentralPanel::default().show(ctx,|ui|{
    let size=ui.available_size();
+   self.map_size=size;
    let (rect,response)=ui.allocate_exact_size(size,egui::Sense::drag());
    let painter=ui.painter_at(rect);
    painter.rect_filled(rect,0.0,Color32::from_rgb(11,20,17));
