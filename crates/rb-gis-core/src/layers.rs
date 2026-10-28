@@ -115,7 +115,10 @@ fn required_str<'a>(item: &'a Value, field: &str) -> Result<&'a str, String> {
 }
 fn safe_filename(s: &str) -> Result<(), String> {
     let p = Path::new(s);
-    if s.len() > 128 || s.is_empty() || p.components().count() != 1 ||
+    if s.len() > 128 || s.is_empty() ||
+        !s.as_bytes()[0].is_ascii_alphanumeric() ||
+        !s.bytes().all(|b| b.is_ascii_alphanumeric() || matches!(b, b'.' | b'_' | b'-')) ||
+        p.components().count() != 1 ||
         !matches!(p.components().next(), Some(Component::Normal(_))) ||
         p.extension().and_then(|v| v.to_str()).is_none_or(|v| !v.eq_ignore_ascii_case("geojson")) {
         return Err("Manifest layer paths must be simple .geojson filenames".into());
@@ -186,6 +189,8 @@ mod tests {
         assert!(safe_filename("../roads.geojson").is_err());
         assert!(safe_filename("roads.geojson").is_ok());
         assert!(safe_filename("sub/roads.geojson").is_err());
+        assert!(safe_filename("with space.geojson").is_err());
+        assert!(safe_filename(".hidden.geojson").is_err());
     }
     #[test] fn package_fixture_loads_real_geometry_types_without_network() {
         let manifest = Path::new(env!("CARGO_MANIFEST_DIR"))
