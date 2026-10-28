@@ -27,3 +27,6 @@ The original map package draws U.S. Census TIGER 2025 roads, areal/linear water 
 ## No regression rule
 
 Do not remove, overwrite, deprecate or rewire the current Pip Boy MAP implementation while RB_GIS is incomplete. The independent GUI may test the RustGIS interop and local packages, but is not an authoritative county-navigation replacement until M2/M5 gates pass.
+
+## Preserved regression inventory
+All 16 mapped legacy tools/test_* and audit_map_cache Python/CJS files identified in the 2026-10-28 Pip Boy repository tree are copied into migration/pip-boy/tools. These are **archival parity references** only. Their original host paths and fixtures still need adaptation; no execution results are claimed.
