@@ -5,11 +5,29 @@ on:
 jobs:
   core:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
-      - run: cargo fmt --all -- --check
-      - run: cargo clippy --workspace --all-targets -- -D warnings
-      - run: cargo test --workspace
+      - name: Checkout exact triggering commit (first-party)
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "pskeffington/rb_gis"
+          test "${#GITHUB_SHA}" -eq 40
+          git init -q
+          git remote add origin "https://github.com/$GITHUB_REPOSITORY.git"
+          git -c protocol.version=2 fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+          git checkout --detach --force FETCH_HEAD
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Install official Rust stable (first-party)
+        run: bash scripts/ci_bootstrap.sh stable
+      - name: Validate offline CI policy
+        run: |
+          python3 tools/validate_ci_policy.py
+          python3 tools/test_validate_ci_policy.py
+      - name: Formatting
+        run: cargo +stable fmt --all -- --check
+      - name: Clippy
+        run: cargo +stable clippy --workspace --all-targets --locked -- -D warnings
+      - name: Tests
+        run: cargo +stable test --workspace --locked
