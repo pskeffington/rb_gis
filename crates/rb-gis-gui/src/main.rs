@@ -3,14 +3,20 @@ mod map_view;
 
 use eframe::egui;
 use rb_gis_core::layers::{
-    load_manifest, local_geojson, visible_coordinates, LayerKind, MapLayer,
-    Provenance, MAX_LAYERS, MAX_PACKAGE_VERTICES,
+    load_manifest, local_geojson, visible_coordinates, LayerKind, MapLayer, Provenance, MAX_LAYERS,
+    MAX_PACKAGE_VERTICES,
 };
 use rb_gis_core::{viewport::Viewport, Coordinate};
 use std::path::{Path, PathBuf};
 
 #[derive(Clone, Copy, PartialEq, Eq)]
-enum Page { Map, Layers, Sources, Gps, Settings }
+enum Page {
+    Map,
+    Layers,
+    Sources,
+    Gps,
+    Settings,
+}
 
 struct MapApp {
     page: Page,
@@ -59,40 +65,53 @@ impl MapApp {
     fn fit_visible(&mut self) {
         let points = visible_coordinates(&self.layers);
         match Viewport::fit_points(
-            &points, self.map_size.x as f64, self.map_size.y as f64, 18.0
+            &points,
+            self.map_size.x as f64,
+            self.map_size.y as f64,
+            18.0,
         ) {
             Ok(view) => {
                 self.view = view;
-                self.status = format!("FITTED {} VISIBLE LAYER(S) / NO GPS",
-                    self.layers.iter().filter(|l| l.visible).count());
+                self.status = format!(
+                    "FITTED {} VISIBLE LAYER(S) / NO GPS",
+                    self.layers.iter().filter(|l| l.visible).count()
+                );
             }
             Err(_) => self.status = "NO VISIBLE GEOMETRY TO FIT".into(),
         }
     }
     fn import_geojson(&mut self, path: &Path) {
-        let source = Provenance::unverified(
-            &self.declared_source, &self.vintage, &self.attribution
-        );
+        let source =
+            Provenance::unverified(&self.declared_source, &self.vintage, &self.attribution);
         let result = source.and_then(|p| local_geojson(path, self.selected_kind, p));
         match result {
             Ok(layer) => {
-                let old = self.layers.iter().position(|l| {
-                    l.filename == layer.filename && l.kind == layer.kind
-                });
+                let old = self
+                    .layers
+                    .iter()
+                    .position(|l| l.filename == layer.filename && l.kind == layer.kind);
                 if old.is_none() && self.layers.len() >= MAX_LAYERS {
                     self.status = "LAYER LIMIT REACHED".into();
                     return;
                 }
-                let total: usize = self.layers.iter().enumerate()
+                let total: usize = self
+                    .layers
+                    .iter()
+                    .enumerate()
                     .filter(|(i, _)| Some(*i) != old)
-                    .map(|(_, l)| l.vertices()).sum::<usize>() + layer.vertices();
+                    .map(|(_, l)| l.vertices())
+                    .sum::<usize>()
+                    + layer.vertices();
                 if total > MAX_PACKAGE_VERTICES {
                     self.status = "TOTAL VERTEX BUDGET EXCEEDED / OLD MAP KEPT".into();
                     return;
                 }
                 let name = layer.name.clone();
-                if let Some(i) = old { self.layers[i] = layer; }
-                else { self.layers.push(layer); }
+                if let Some(i) = old {
+                    self.layers[i] = layer;
+                } else {
+                    self.layers.push(layer);
+                }
                 self.status = format!("LOCAL LAYER LOADED: {name} / SOURCE UNVERIFIED");
                 self.page = Page::Map;
                 self.pending_fit = true;
@@ -120,8 +139,11 @@ impl MapApp {
                 self.status = "DROP REJECTED: LOCAL FILE PATH REQUIRED".into();
                 continue;
             };
-            let ext = path.extension().and_then(|e| e.to_str())
-                .unwrap_or("").to_ascii_lowercase();
+            let ext = path
+                .extension()
+                .and_then(|e| e.to_str())
+                .unwrap_or("")
+                .to_ascii_lowercase();
             match ext.as_str() {
                 "geojson" => self.import_geojson(&path),
                 "json" => self.import_package(&path),
@@ -150,16 +172,28 @@ impl MapApp {
             if ui.small_button("+").clicked() {
                 self.view.zoom = (self.view.zoom + 1.0).min(19.0);
             }
-            if ui.small_button("FIT").clicked() { self.pending_fit = true; }
-            if ui.small_button("GRID").clicked() { self.show_grid = !self.show_grid; }
-            if ui.small_button("LAYERS").clicked() { self.page = Page::Layers; }
+            if ui.small_button("FIT").clicked() {
+                self.pending_fit = true;
+            }
+            if ui.small_button("GRID").clicked() {
+                self.show_grid = !self.show_grid;
+            }
+            if ui.small_button("LAYERS").clicked() {
+                self.page = Page::Layers;
+            }
         });
         self.map_size = ui.available_size();
         if self.pending_fit {
             self.pending_fit = false;
             self.fit_visible();
         }
-        map_view::paint(ui, &mut self.view, &self.layers, self.show_grid, self.show_labels);
+        map_view::paint(
+            ui,
+            &mut self.view,
+            &self.layers,
+            self.show_grid,
+            self.show_labels,
+        );
     }
     fn layers_page(&mut self, ui: &mut egui::Ui) {
         ui.horizontal(|ui| {
@@ -177,26 +211,41 @@ impl MapApp {
         let mut remove = None;
         let mut fit = None;
         egui::ScrollArea::vertical().show(ui, |ui| {
-            if self.layers.is_empty() { ui.label("No local map sources. Open SRC to import."); }
+            if self.layers.is_empty() {
+                ui.label("No local map sources. Open SRC to import.");
+            }
             for (i, layer) in self.layers.iter_mut().enumerate() {
                 ui.horizontal(|ui| {
                     ui.checkbox(&mut layer.visible, "");
-                    ui.label(format!("{} / {} ({})",
-                        layer.kind.label(), layer.name, layer.content.features.len()));
-                    if ui.small_button("FIT").clicked() { fit = Some(i); }
-                    if ui.small_button("X").clicked() { remove = Some(i); }
+                    ui.label(format!(
+                        "{} / {} ({})",
+                        layer.kind.label(),
+                        layer.name,
+                        layer.content.features.len()
+                    ));
+                    if ui.small_button("FIT").clicked() {
+                        fit = Some(i);
+                    }
+                    if ui.small_button("X").clicked() {
+                        remove = Some(i);
+                    }
                 });
-                ui.small(format!("Declared: {} | {} | {}",
+                ui.small(format!(
+                    "Declared: {} | {} | {}",
                     layer.provenance.declared_source,
                     layer.provenance.vintage,
-                    layer.provenance.attribution));
+                    layer.provenance.attribution
+                ));
                 ui.separator();
             }
         });
         if let Some(i) = fit {
             let coords: Vec<_> = self.layers[i].points().collect();
             match Viewport::fit_points(
-                &coords, self.map_size.x as f64, self.map_size.y as f64, 18.0
+                &coords,
+                self.map_size.x as f64,
+                self.map_size.y as f64,
+                18.0,
             ) {
                 Ok(view) => {
                     self.view = view;
@@ -219,8 +268,7 @@ impl MapApp {
             ui.separator();
             ui.horizontal(|ui| {
                 ui.label("GeoJSON");
-                ui.add(egui::TextEdit::singleline(&mut self.geojson_path)
-                    .desired_width(230.0));
+                ui.add(egui::TextEdit::singleline(&mut self.geojson_path).desired_width(230.0));
             });
             ui.horizontal(|ui| {
                 ui.label("Role");
@@ -238,24 +286,20 @@ impl MapApp {
             });
             ui.horizontal(|ui| {
                 ui.label("Source");
-                ui.add(egui::TextEdit::singleline(&mut self.declared_source)
-                    .desired_width(230.0));
+                ui.add(egui::TextEdit::singleline(&mut self.declared_source).desired_width(230.0));
             });
             ui.horizontal(|ui| {
                 ui.label("Vintage");
-                ui.add(egui::TextEdit::singleline(&mut self.vintage)
-                    .desired_width(120.0));
+                ui.add(egui::TextEdit::singleline(&mut self.vintage).desired_width(120.0));
             });
             ui.horizontal(|ui| {
                 ui.label("Credit");
-                ui.add(egui::TextEdit::singleline(&mut self.attribution)
-                    .desired_width(230.0));
+                ui.add(egui::TextEdit::singleline(&mut self.attribution).desired_width(230.0));
             });
             ui.separator();
             ui.horizontal(|ui| {
                 ui.label("Package");
-                ui.add(egui::TextEdit::singleline(&mut self.manifest_path)
-                    .desired_width(210.0));
+                ui.add(egui::TextEdit::singleline(&mut self.manifest_path).desired_width(210.0));
                 if ui.button("OPEN").clicked() {
                     let path = PathBuf::from(self.manifest_path.trim());
                     self.import_package(&path);
@@ -276,7 +320,11 @@ impl MapApp {
             ui.add(egui::TextEdit::singleline(&mut self.lon).desired_width(95.0));
         });
         if ui.button("SET MANUAL CENTER").clicked() {
-            let point = self.lat.trim().parse::<f64>().ok()
+            let point = self
+                .lat
+                .trim()
+                .parse::<f64>()
+                .ok()
                 .zip(self.lon.trim().parse::<f64>().ok())
                 .and_then(|(lat, lon)| Coordinate::new(lat, lon).ok());
             match point {
@@ -320,19 +368,22 @@ impl eframe::App for MapApp {
                 ui.label(format!("{}L z{:.1} OFF", self.layers.len(), self.view.zoom))
                     .on_hover_text(format!(
                         "{} center: {:.5}, {:.5} / No live GPS",
-                        if self.manual_center { "Manual" } else { "Unlocated" },
-                        self.view.center.latitude, self.view.center.longitude
+                        if self.manual_center {
+                            "Manual"
+                        } else {
+                            "Unlocated"
+                        },
+                        self.view.center.latitude,
+                        self.view.center.longitude
                     ));
             });
         });
-        egui::CentralPanel::default().show(ctx, |ui| {
-            match self.page {
-                Page::Map => self.map_page(ui),
-                Page::Layers => self.layers_page(ui),
-                Page::Sources => self.sources_page(ui),
-                Page::Gps => self.gps_page(ui),
-                Page::Settings => self.settings_page(ui),
-            }
+        egui::CentralPanel::default().show(ctx, |ui| match self.page {
+            Page::Map => self.map_page(ui),
+            Page::Layers => self.layers_page(ui),
+            Page::Sources => self.sources_page(ui),
+            Page::Gps => self.gps_page(ui),
+            Page::Settings => self.settings_page(ui),
         });
     }
 }
@@ -343,6 +394,9 @@ fn main() -> eframe::Result<()> {
             .with_min_inner_size([320.0, 240.0]),
         ..Default::default()
     };
-    eframe::run_native("RB_GIS / Standalone", options,
-        Box::new(|_| Ok(Box::new(MapApp::default()))))
+    eframe::run_native(
+        "RB_GIS / Standalone",
+        options,
+        Box::new(|_| Ok(Box::new(MapApp::default()))),
+    )
 }
