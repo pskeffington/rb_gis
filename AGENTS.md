@@ -19,5 +19,8 @@ rb_gis is the independently deployable Rust GIS and navigation package. The Rust
 ## Navigation workflow skill
 For navigation planning/implementation, load .agents/skills/offline-navigation/SKILL.md and only the relevant references.
 
+## Current kickoff and task register
+Read docs/STATUS_2026-10-30.md and docs/AGENT_TASK_QUEUE.md before selecting work. Confirm the checked-out branch contains Cargo.toml, AGENTS.md, and docs/navigation/CODEX_KICKOFF_ROAD_WATER_FOOT.md. The main branch currently lacks these; never pretend it is the implementation checkout.
+
 ## First actionable task
-AG-001: inventory current repository structures and the known old road/boundary/zone loader; create a file-level parity matrix before writing a routing engine.
+RB-00: verify intended checkout, inventory file paths/HEAD, then RB-02 / WF-00 legacy road/boundary/zone parity matrix before implementing routing. Report unverified gates as NOT RUN.
