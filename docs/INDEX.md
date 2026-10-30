@@ -35,3 +35,13 @@ A native build was not executed in this session: Cargo is absent from the execut
 ## Machine indexing contract
 
 When changing code, update catalog/components.json and catalog/index.json as appropriate. Update catalog/gates.json only when evidence supports milestone changes. Keep independent GUI and original Pip Boy map intact until parity. Source owners must always be clear; do not move the entire host runtime into RB_GIS.
+
+## October 30 coordination
+
+- [Branch reconciliation and evidence status](STATUS_2026-10-30.md)
+- [Prioritized Codex agent queue and crosswalk](AGENT_TASK_QUEUE.md)
+- [Navigation roadmap](navigation/ROADMAP.md)
+- [Road and waterfront deterministic algorithm kickoff](navigation/CODEX_KICKOFF_ROAD_WATER_FOOT.md)
+- [Navigation literature matrix](navigation/LITERATURE_MATRIX.md)
+
+The navigation feature branch is based on the native GIS foundation and is the documented Codex starting point; do not start an implementation pass from the minimal main checkout.
