@@ -12,3 +12,7 @@ This repo is the independent future implementation of Rust-Boy's MAP package. It
 ## Development progress (2026-11-05)
 
 See [progress and branch reconciliation](docs/PROGRESS_2026-11-05.md). Native core/GUI sources and navigation tasking are on feature branches, not yet established as merged or validated on main. Pip Boy retains the operational Census road/water/boundary and ZIP/county loader until parity is demonstrated. No standalone GUI, routing, or hardware acceptance is claimed from this documentation review.
+
+## Next development pass
+
+Follow the [gated development roadmap](docs/DEVELOPMENT_ROADMAP_2026-11-05.md) and [Codex M1 kickoff](docs/CODEX_NEXT_PASS_2026-11-05.md). The next engineering work is branch recovery, native build evidence and legacy Census loader parity before navigation implementation.
