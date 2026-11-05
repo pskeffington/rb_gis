@@ -10,7 +10,10 @@
       "year": 1947,
       "kind": "proposed_partition",
       "color": "#ff5353",
-      "dash": [7, 4],
+      "dash": [
+        7,
+        4
+      ],
       "line_width_px": 2,
       "source_primary": "https://www.un.org/unispal/document/auto-insert-208958/",
       "source_alternate": "https://www.un.org/unispal/document/auto-insert-204145/",
@@ -20,15 +23,21 @@
     },
     {
       "id": "green_line_1949",
-      "label": "1949 Armistice Demarcation Line (Green Line)",
+      "label": "Pre-June 1967 Line (1949 Armistice / Green Line)",
       "year": 1949,
       "kind": "armistice_demarcation",
       "color": "#a8ff80",
-      "dash": [4, 3],
+      "dash": [
+        4,
+        3
+      ],
       "line_width_px": 2,
       "source_primary": "https://gis.unocha.org/server/rest/services/Hosted/1949_Armistice_Green_Line/FeatureServer/0",
       "geodata_path": null,
-      "status": "SOURCE_GEOMETRY_NOT_VERIFIED"
+      "status": "SOURCE_GEOMETRY_NOT_VERIFIED",
+      "ui_short_label": "PRE-1967",
+      "default_visible_after_geometry_validation": true,
+      "note": "Reference to the 1949 armistice demarcation as it stood before June 1967; not a final treaty border and not the post-June 1967 ceasefire/control line."
     },
     {
       "id": "jerusalem_corpus_separatum_1947",
@@ -36,7 +45,10 @@
       "year": 1947,
       "kind": "proposed_special_regime",
       "color": "#ffc66b",
-      "dash": [2, 4],
+      "dash": [
+        2,
+        4
+      ],
       "line_width_px": 2,
       "source_primary": "https://www.un.org/unispal/document/auto-insert-209955/",
       "geodata_path": null,
@@ -44,8 +56,14 @@
     }
   ],
   "scope_rule": {
-    "no_geographic_content": ["gaza_strip", "entire_west_bank_including_east_jerusalem"],
-    "render_order": ["boundary_source_geometry", "hard_exclusion_mask"],
+    "no_geographic_content": [
+      "gaza_strip",
+      "entire_west_bank_including_east_jerusalem"
+    ],
+    "render_order": [
+      "boundary_source_geometry",
+      "hard_exclusion_mask"
+    ],
     "fail_closed_without_validated_mask": true,
     "no_property_level_classification": true,
     "boundary_lines_in_excluded_regions": "suppressed"
