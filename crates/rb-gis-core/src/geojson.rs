@@ -172,7 +172,7 @@ mod tests {
             "[[[0,0],[1,1],[0,0],[1,1],[0,0]]]",
         ] {
             let source = format!(
-                "{{\\\"type\\\":\\\"Feature\\\",\\\"geometry\\\":{{\\\"type\\\":\\\"Polygon\\\",\\\"coordinates\\\":{coords}}}}}"
+                r#"{{"type":"Feature","geometry":{{"type":"Polygon","coordinates":{coords}}}}}"#
             );
             assert!(parse_geojson(source.as_bytes()).is_err());
         }
