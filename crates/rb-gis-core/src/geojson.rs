@@ -58,6 +58,21 @@ fn polygon(v: &Value, count: &mut usize) -> Result<Vec<Vec<Coordinate>>, String>
         if path.first() != path.last() {
             return Err(err());
         }
+        // A closed ring needs at least three distinct positions. Four
+        // repeated points satisfy the length/closure checks but do not
+        // describe a polygon and must not reach the renderer.
+        let mut distinct = Vec::with_capacity(3);
+        for point in &path[..path.len() - 1] {
+            if !distinct.contains(point) {
+                distinct.push(*point);
+                if distinct.len() == 3 {
+                    break;
+                }
+            }
+        }
+        if distinct.len() < 3 {
+            return Err(err());
+        }
         result.push(path);
     }
     Ok(result)
@@ -149,6 +164,20 @@ mod tests {
         let l = parse_geojson(s).unwrap();
         assert_eq!(l.features.len(), 2);
         assert_eq!(l.features[0].label.as_deref(), Some("Waypoint"));
+    }
+    #[test]
+    fn polygon_rings_require_three_distinct_vertices() {
+        for coords in [
+            "[[[0,0],[0,0],[0,0],[0,0]]]",
+            "[[[0,0],[1,1],[0,0],[1,1],[0,0]]]",
+        ] {
+            let source = format!(
+                r#"{{"type":"Feature","geometry":{{"type":"Polygon","coordinates":{coords}}}}}"#
+            );
+            assert!(parse_geojson(source.as_bytes()).is_err());
+        }
+        let valid = br#"{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[0,0],[1,0],[0,1],[0,0]]]}}"#;
+        assert!(parse_geojson(valid).is_ok());
     }
     #[test]
     fn rejects_invalid_and_unclosed() {
