@@ -16,3 +16,7 @@ See [progress and branch reconciliation](docs/PROGRESS_2026-11-05.md). Native co
 ## Next development pass
 
 Follow the [gated development roadmap](docs/DEVELOPMENT_ROADMAP_2026-11-05.md) and [Codex M1 kickoff](docs/CODEX_NEXT_PASS_2026-11-05.md). The next engineering work is branch recovery, native build evidence and legacy Census loader parity before navigation implementation.
+
+## Repository sweep routing
+
+Repository maintenance follows the generalized [repository sweep decision-routing policy](https://github.com/pskeffington/Best-Practices-Git/blob/main/docs/repository-cleanup-and-reconciliation-policy.md): inventory first, preserve divergent work, record exact evidence, and keep unavailable build, GUI, hardware, or parity checks as NOT RUN or BLOCKED. This README and the roadmap are documentation baselines; native implementation, parity, and release claims require their own reviewed evidence.
