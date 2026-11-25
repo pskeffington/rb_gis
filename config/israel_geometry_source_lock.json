@@ -1,0 +1,90 @@
+{
+  "schema": "rb-gis-geosource-lock/v1",
+  "status": "RESEARCH_VALIDATED_METADATA_ONLY",
+  "target_crs": "EPSG:4326",
+  "coordinate_order": "longitude,latitude",
+  "date": "2026-11-05",
+  "sources": [
+    {
+      "id": "green_line_1949",
+      "label": "1949 Armistice / Pre-June 1967 reference",
+      "publisher": "UN OCHA",
+      "role": "primary_vector_candidate",
+      "service": "https://gis.unocha.org/server/rest/services/Hosted/1949_Armistice_Green_Line/FeatureServer/0",
+      "query": "https://gis.unocha.org/server/rest/services/Hosted/1949_Armistice_Green_Line/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson",
+      "source_crs": "EPSG:4326",
+      "geometry_type": "Polyline",
+      "reported_extent_wgs84": [
+        34.26852040374576,
+        31.20457065767549,
+        35.556667063702186,
+        32.56692836468604
+      ],
+      "coverage_status": "PARTIAL_OR_UNVERIFIED",
+      "geometry_sha256": null,
+      "feature_count": null,
+      "publication_status": "DO_NOT_RENDER",
+      "notes": "Extent alone cannot establish completeness for the full pre-1967 reference; independently compare with other armistice segments."
+    },
+    {
+      "id": "un181_1947",
+      "label": "1947 UN Resolution 181 proposed partition borders",
+      "publisher": "Esri community-hosted third party (no source acknowledged)",
+      "role": "secondary_vector_candidate",
+      "service": "https://services.arcgis.com/PreAgUje3h7wiyyM/ArcGIS/rest/services/Resolution_181_Borders/FeatureServer/0",
+      "source_crs": "EPSG:3857",
+      "target_crs": "EPSG:4326",
+      "geometry_type": "PolyLine (confirm against layer metadata)",
+      "historical_primary": "https://digitallibrary.un.org/record/413244",
+      "resolution": "https://www.un.org/unispal/document/auto-insert-185393/",
+      "coverage_status": "PROVENANCE_UNVERIFIED",
+      "geometry_sha256": null,
+      "feature_count": null,
+      "publication_status": "DO_NOT_RENDER",
+      "notes": "Third-party digitization is not UN-authoritative. Independently compare topology to UN 1947 map and resolution annex; quantify cartographic uncertainty."
+    },
+    {
+      "id": "exclusion_west_bank",
+      "label": "Full West Bank including East Jerusalem",
+      "publisher": "UN OCHA/HDX administrative boundaries candidate",
+      "role": "mandatory_public_coverage_mask",
+      "service": "https://data.humdata.org/",
+      "source_crs": null,
+      "coverage_status": "REQUIRES_VALIDATED_POLYGON",
+      "geometry_sha256": null,
+      "publication_status": "FAIL_CLOSED"
+    },
+    {
+      "id": "exclusion_gaza",
+      "label": "Gaza Strip",
+      "publisher": "UN OCHA/HDX administrative boundaries candidate",
+      "role": "mandatory_public_coverage_mask",
+      "service": "https://data.humdata.org/",
+      "source_crs": null,
+      "coverage_status": "REQUIRES_VALIDATED_POLYGON",
+      "geometry_sha256": null,
+      "publication_status": "FAIL_CLOSED"
+    }
+  ],
+  "validation_gates": [
+    "source license/terms",
+    "record retrieval timestamp and response hash",
+    "verify EPSG and transform to WGS84",
+    "verify extent, completeness and date",
+    "independent 1947 cartographic comparison",
+    "verify Gaza and full West Bank masks inclusive of East Jerusalem",
+    "intersections and clipping with topology tests",
+    "label positioning and rendered tile leak tests",
+    "source geometry hash and code review before publication"
+  ],
+  "render_policy": {
+    "mask_precedence": "last",
+    "no_coverage_on_missing_mask": true,
+    "geographic_exclusions": [
+      "Gaza Strip",
+      "entire West Bank, including East Jerusalem"
+    ],
+    "property_classification": "not inferred from position against a historic boundary",
+    "online_fetch_at_runtime": false
+  }
+}
